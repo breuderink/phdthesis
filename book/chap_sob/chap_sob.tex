@@ -1,0 +1,96 @@
+\chapter{Cross-subject generalization}
+%\chapter{Removing inter-session variability}
+\label{chap:sob}
+
+% motivation to look at changing feature dists
+\lettrine{I}{n} Chapter~\ref{chap:loc} we demonstrated that \acp{BCI} based on
+oscillatory (\ac{ERD}) features are sensitive to changes in the mental
+state --- changes that are unrelated to the mental task used to control the
+\ac{BCI}. While the \ac{ERP} based classifiers were proven to result in higher
+and more reliable performance than their \ac{ERD} counterparts, here we focus
+on improving the \ac{ERD} based classifiers that exhibit the problematic drifts
+in performance well known in the \ac{BCI} field\footnote{This chapter is based
+on \cite{reuderink2011sib}, accepted for oral presentation at EMBC'2011.}. The
+reason we focus on a \ac{ERD} based \ac{BCI} is that it is well studied, and
+known to work when the user only imagines movement, and does not actually
+perform movement as was the case in Chapter~\ref{chap:loc}; for \ac{LRP}
+classification we are not aware of \ac{BCI} studies with fully imagined
+movement. Furthermore, improvement obtained with movement-related \ac{ERD}
+might prove to be beneficial for other oscillatory brain signatures, such as
+those related to covert attention \citep[e.g.][]{vangerven2009amp}.
+
+% drifts in joint feature distributions
+Changes in \ac{BCI} performance might be caused by changes
+in the generating processes (e.g. due to changes in attention, or different
+processes for motor control), or more generally, by changes in the joint
+distribution of task-relevant and task-irrelevant \ac{EEG} features. This means
+that not only changes in the task-relevant neural activity, but also unrelated
+changes (e.g. \ac{LOC} in the previous chapter) might affect the \ac{BCI}.
+% introduce generalization
+Changes or drifts in the feature distributions pose a problem for automatic
+discrimination, since the ability to generalize to new data of a static
+\ac{BCI} classifier depends on the appropriateness of the learned decision
+function for the online data. When there is a change in the feature
+distribution compared to the calibration data (covariate shift), it is likely
+that the quality of the predictions will degrade; the \ac{BCI} classifier does not
+generalize well to this data.
+% 
+This difficulty of generalization holds for application of a trained
+\ac{BCI} to future data within the same session, to new sessions of the same
+subject, and to other subjects, in increasing order of difficulty.
+
+% Why relevant
+Being able to successfully apply a \ac{BCI} to new sessions and subjects is
+relevant for various reasons. Practically, a \ac{BCI} that does not require a
+calibration session before each use is much more user friendly. Secondly, if a
+\ac{BCI} generalizes to new users this indicates that the mechanism used to
+classify is a generic one. This aids interpretation of the neural signatures
+used for control. And finally, if a \ac{BCI} is known to operate robustly
+during changing contexts (i.e. mental states, recording environment), this
+means its operation is not depending on these contexts.
+
+% Adaptation in feat-space vs in classifier
+To achieve generalization under covariate-shift, either the classifier can be
+adap\-ted to the changing feature distributions \cite{vidaurre2011tua,
+shenoy2006tac}, or the spatial filters themselves can be adapted
+\cite{bunau2009ssa, meinecke2009lis, tomioka2006asf, hill2006tdd, satti2010csm,
+blankertz2007ics, shenoy2006tac}. The advantage of adapting the spatial filters
+is that a wide variety (e.g. disconnected sensors) of distribution changes can
+be tracked when they are estimated correctly. While adaptation of the
+classifier cannot handle all these changes, due to its simplicity it is easier
+to estimate, and can therefore be more robust.
+%
+A further distinction can be made between methods that perform adaptation only
+during the (off-line) training phase \citep[e.g.][]{bunau2009ssa,
+meinecke2009lis, blankertz2007ics}, and methods that perform online adaptation
+\cite{vidaurre2011tua, tomioka2006asf, hill2006tdd, satti2010csm,
+shenoy2006tac}. The off-line adaptation methods implicitly assume that there is
+a spatial subspace that is stationary, and retains most of the discriminatory
+information. It is unclear whether such a subspace does indeed exist.
+%
+Therefore, we took the most flexible approach, that combines online adaptation
+with adaptation in feature space (i.e. adaptation of the spatial filters).
+
+% Scope and summary of our method
+In this chapter, we will present a \ac{SOB} procedure that reduces long-term,
+non task-related variations. This procedure enables the creation of a \ac{BCI}
+that can be applied to new subjects \emph{without a calibration session}.
+%
+Since non-stationary distributions of specifically \ac{ERD} based features have
+been reported in \cite{shenoy2006tac, blankertz2007ics, jatzev2008ecn} and are
+supported by the results presented in Chapter~\ref{chap:loc}, we evaluate our
+method with \ac{ERD} based features --- although it is in no way limited to
+this type of feature extraction.
+
+In the next sections, we will describe prior work on subject-independent
+classification, outline our baselining method and describe an off-line
+experiment used to assess the performance on unseen subjects. Then we will
+describe and discuss the results, and end with conclusions and remarks for
+future work.
+\clearpage % against underfull \vbox
+
+\input{tex/sec_prevwork.tex}
+\input{tex/sec_methods.tex}
+\input{tex/sec_results.tex}
+\input{tex/sec_discussion.tex}
+\input{tex/sec_conclusion.tex}

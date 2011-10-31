@@ -1,0 +1,49 @@
+\chapter{Influence of loss of control}
+\label{chap:loc}
+
+\lettrine{I}{t} is widely believed that \ac{BCI} performance fluctuates over
+time due to non-stationary feature distributions \cite{mueller2008mlr,
+blankertz2007ics, bunau2009ssa, vidal1977rtd, shenoy2006tac, krauledat2008tzt,
+sun2006afe, wolpaw2002bci, jatzev2008ecn}. These non-stationary feature
+distributions violate the basic assumption made by the classification models
+that the evaluation data (i.e. the online session) is distributed identically
+to the data the model was trained on. This problem is known as \emph{covariate shift}, and leads to decreases in the classification performance.
+%
+Among the hypothesised causes for these non-stationary feature distributions
+are changes in the mental state (e.g. fatigue, workload, \ac{LOC}) and
+artifacts \cite{blankertz2007ics, jatzev2008ecn}.
+\todo{DH: Is LOC een bestaand concept -> kun je meer over zeggen}
+%
+Although it seems plausible that mental state changes that are detectable in
+the \ac{EEG} can interfere with \ac{BCI} operation, there is not much
+experimental evidence for this effect. 
+
+In this Chapter, we therefore describe an experiment\footnote{ The work
+described in chapter was accepted for publication in the journal IEEE
+Transactions of Neural Systems and Rehabilitation Engineering
+\cite{reuderink2011ilc}.} we performed to investigate the influence of a
+feeling of \ac{LOC} on the detectability of movements with the left and right
+index finger through the \ac{EEG}. 
+%
+Changes in the \ac{EEG} related to users experiencing a state of \ac{LOC} might
+lead to a decrease in \ac{BCI} performance due to the aforementioned covariate
+shift. In turn, the user state is again influenced by the decreased performance
+of the \ac{BCI}; for example, the non-working \ac{BCI} could cause increased
+frustration, anger and reduced alertness. This interaction between the user
+state and the \ac{BCI} performance might result in a positive feedback loop,
+leading to a \ac{BCI} that spins out of control.
+%
+Given the huge drawbacks of a \ac{BCI} that can stop working depending on the
+mental state of a user, understanding the influence of changes in the mental
+state on the \ac{BCI} is of great importance to develop reliable \acp{BCI}.
+
+In the following sections we will describe previous work on the relation between
+mental states and \ac{BCI} performance, the methods we used, our results, and a
+discussion of our experiment, followed by conclusions and directions for future
+research.
+
+\input{tex/sec_prev.tex}
+\input{tex/sec_methods.tex}
+\input{tex/sec_results.tex}
+\glsresetall
+\input{tex/sec_conclusions.tex}

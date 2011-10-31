@@ -1,0 +1,250 @@
+\chapter{Introduction} \label{chap:intro}
+% TODO:
+% Applications (AN)
+% Distinction online and off-line
+%  - in-between options
+%  - impact on evaluation
+%  - causality and implementation
+%  - naming (real-time/online)
+% Focus on machine learning, traditional off-line research on core challenges
+% Non-invasive
+% Impact of gaming on my research?
+% Use term 'decoding'
+
+% BCI field
+\begin{sloppypar}
+\lettrine{A}{} \ac{BCI} enables direct communication from the brain to devices,
+bypassing the traditional pathway of peripheral nerves and muscles. In the
+past, \acp{BCI} have been targeted mainly at paralysed patients or patients
+with motor disabilities who have hardly any other means of communication
+\cite{farwell1988tth, birbaumer1999sdp, wolpaw2002bci}. But the unique
+possibilities of \ac{BCI} technology are by no means limited to those in need;
+\ac{BCI} technology enables the use of signals related to attention, intentions
+and mental state, without relying on indirect measures based on overt behaviour
+or other physiological signals \cite{zander2011tpb, vangerven2009amp, krauledat2004isa}.
+\end{sloppypar}
+
+% types of BCI: user training vs ML
+The traditional approach to \acp{BCI} is to provide the user with a device that
+is controlled through a fixed function of the brain signals, and let the users
+learn to voluntarily modify their brain signals, which takes weeks or even
+months \cite{wolpaw2002bci}. An alternative, more user friendly approach is to
+adapt the \ac{BCI} to the user's naturally occurring brain signals with
+\acf{ML} methods (e.g. \cite{vidal1977rtd, blankertz2008osf}), which reduces
+the investment of time needed for the first use of a \ac{BCI} from weeks to
+minutes. Due to inter-subject variations in the measured neuronal activity
+linked to specific mental tasks (the neuronal signature), a \ac{BCI} session
+typically starts with a training session in which the subject performs a
+known series of mental tasks. After this session, these examples of brain
+activity are used to guide the optimization of a classification model that
+decodes neuronal activity based on a few seconds of the \ac{EEG} signal. In this
+dissertation, we take this latter approach. Note that the two approaches
+mentioned above are not mutually exclusive.
+
+% invasive vs non-invasive
+The level of invasiveness is another major determining factor in \ac{BCI}
+research. In this dissertation, we focus on the use of the electrical signals
+that are emitted by large ensembles of neurons, and are \emph{measured on the
+outside of the scalp} (i.e. \ac{EEG}). Most \ac{BCI} research in Europe is
+based on these external \ac{EEG} measures. Research groups in the United States
+generally take a more invasive approach, and place sensors under the scull, or
+even deep in the brain. This has the advantage that the measurements are less
+contaminated with external noise, and suffer less from spatial smearing
+(blurring) by the tissues between the neural sources and the sensors. The
+disadvantage is that one needs to undergo surgery, and that the implants
+usually work for a limited time. 
+%
+Less frequently used for \acp{BCI} are non-invasive measures of brain activity
+based on magnetic fields (i.e. \acl{MEG}, \acs{MEG}), or on depleting oxygen
+concentrations in the blood that indicate brain activity, such as \ac{fMRI} and
+\ac{fNIRS} \cite{wolpaw2006bm2}. 
+
+% type of research conducted
+Most of the current \ac{BCI} research focusses on better neuronal signatures
+(i.e. neuroscience), better decoding of these neural signatures (i.e. signal
+processing, machine learning) and on developing specific applications for
+patients (e.g. speller grids). The traditionally clinical background of
+\ac{BCI} practitioners is reflected in the focus on trial-based discrimination
+between a limited and tightly controlled set of tasks. Furthermore, the online
+evaluation is often performed in an environment similar to these controlled
+off-line experiments, with a classifier that is transplanted from off-line
+calibration data and used to classify batches of \ac{EEG} \emph{after} the task
+has been performed as indicated by a cue.
+
+\section{BCIs for healthy users}
+% HMI/BCI
+\begin{sloppypar}
+Compared to other groups, the recently started \ac{BCI} research within our
+\ac{HMI} group takes a more holistic approach, and attempts to create user
+friendly \acp{BCI} based on established neuronal signatures, and evaluate these
+in unconstrained environments both on efficacy, user experience and ethical
+considerations. \Ac{HMI} aims at \acp{BCI} for healthy users, specifically
+applied in gaming contexts. \end{sloppypar}
+
+% gaming
+\Ac{BCI} gaming applications are interesting for several reasons.
+First, the target population is huge, and gamers are known to be early adopters
+of new technology. Second, a less than stellar \ac{BCI} efficacy might not be
+problematic in the context of a game, and might even contribute an immersive
+challenge (i.e. learn to control a magical in-game construct)
+\cite{nijholt2009tsc2}. 
+%
+If gamers embrace \ac{BCI} technology, this will provides scales to mass-produce
+hardware and fund more research, which could eventually lead to feasible
+applications outside gaming. However, premature commercial exploitation of
+\ac{BCI} technology is feared by the field, as claims of interpreting brain signals are often exaggerated by commercial parties --- which could lead to a disappointed public.
+
+% BCI and gaming challenges
+The implied transition from a controlled lab to an unconstrained gaming
+environment poses some new challenges. During gaming, signals produced by
+facial expressions, speech and eye movement heavily contaminate the, in
+comparison weak, \acs{EEG} signals. As such, some of the research at \ac{HMI}
+explores the challenges and drawbacks of \ac{BCI} combined with for example
+speech recognition \cite{gurkok2010cmi}. Most of our studies allow the user to
+behave naturally. The drawback is that this implies careful interpretation of
+what measures are based on neuronal signals, and to what extent this is of
+importance for the target audience. \todo{MP: Add graphical examples for EEG
+and artifacts}
+
+% BCI and gaming opportunities
+These challenges of unconstrained environments are balanced by some rather
+unique possibilities offered by the \ac{BCI}. For example, the game can use
+indicators of imminent movement to anticipate future actions of the user,
+thereby blurring the boundary between the user's intentions and explicit
+behaviour in interaction. More fundamentally, measures of the user experience
+(e.g. workload, attention, or emotional states) can --- if reliable measures
+are found --- be used to adapt the game to keep the user in a
+state of being fully focused and immersed in the game. This mental state is
+known as ``flow'' \cite{csikszentmihalyi1990fpo}. For this reason, some of our
+work focusses on automatic recognition of mental states
+\cite{reuderink2012vad}. 
+ 
+% measures of attention
+Another unique property of \acp{BCI} is that most conventional neural
+signatures are related to some form of attention. For example, imaginary
+movement produces changes in the \ac{SMR}, and is modulated by attention
+\cite{kirsteva-feige2002eap}. Similarly, spelling applications for patients
+frequently use the P300 response that is strongly linked to attention
+\cite{gray2004pia}. Other examples include the \ac{SSVEP} response to
+flickering lights, and direct measures of visual attention
+\cite{vangerven2009amp}. This attentional aspect of these neural signatures is
+what makes them viable for active \ac{BCI} control.
+ 
+By measuring attention, a \ac{BCI} can offer valuable information that measures
+of behaviour never can: it can provide an indication of the \emph{context} that
+disambiguates the users behaviour. For example, a user making a phone call
+could direct speech commands to the computer if we could detect that the
+computer is the object of the user's (covert) attention.
+
+These unique applications depend on a \ac{BCI} that can reliably detect
+naturally occurring brain activity. Two key issues in the decoding of brain
+signals complicate the development of these applications.
+\clearpage % prevents underfull \vbox
+
+\section{Key challenges for BCI adoption}
+We identify two key issues that need to be addressed for wide \ac{BCI} adoption
+in general: 1) using a \ac{BCI} should be easy, and not require big
+investments by the user (e.g. money and time), and 2) the \ac{BCI} should be
+dependable, that is to say it should function predictably, with a known
+accuracy \cite{millan2010cbc, vangerven2009bci, huggins2011wwb}\footnote{Note
+that a known accuracy does not imply that the accuracy has to be high.}. In
+addition, the \ac{BCI} should be applied such that it provides something unique
+for non-patients, since it cannot (yet) compete on reliability and speed with
+existing input devices. 
+
+% Issue 1: Investment of time
+Due to the availability of relatively cheap, semi-dry commercial \ac{EEG}
+headsets for gaming that show promise for proper \ac{BCI} use
+\cite{bobrov2011bci}, the first key issue mainly revolves around investments of
+time. The investment of time can be separated into user training and setup
+time; both should be kept very short.
+%
+The maximally acceptable setup time for \ac{ALS} patients is around 30 minutes,
+with the maximum of 2--5 sessions in total for user training
+\cite{huggins2011wwb}. 
+%
+While current \acp{BCI} based on \ac{ML} methods can achieve competitive
+performance without any user training \cite{vidal1977rtd, blankertz2006bbc},
+the time needed to set up the recording equipment and to record a calibration
+session typically exceeds this acceptable setup time. Non-patients are probably
+even less willing to accept long investments of time. Ideally, we would like to
+reduce the setup time to one or two minutes, and remove the calibration and
+user training time altogether.
+
+% Issue 2: Unreliability / non-stationary signals
+An example of the second key issue is described in the review of
+\citet{wolpaw2002bci}, where \ac{ALS} patients in the experiment by
+\citet{kuebler1999ttd} report to prefer a slower character-based speller over a
+faster word-based speller. They felt more independent since the former was
+completely under their control. 
+%
+Being in control implies that the \ac{BCI} should not behave unexpectedly,
+but not necessarily that the \ac{BCI} operates without errors. Lack of errors
+is not strictly needed since there is a fundamental trade-off between the
+number of errors and the speed of a \ac{BCI} --- the error rate can be reduced
+by integrating predictions over a longer period of time. But this trade-off
+only holds if the BCI makes mistakes with a constant probability. Therefore, a
+\ac{BCI} with a constant error rate should be preferred over a \ac{BCI} with a
+variable, but lower error rate, since the former can be relied upon, if slowed
+down to acceptable error rates.
+
+Unexpected, erratic \ac{BCI} behaviour can be caused by non-stationary signals.
+This is known to be a fundamental problem in the \ac{BCI} field. The inherent
+variable nature of spontaneous \ac{EEG} causes changes in the feature
+distributions used by the \ac{BCI} to detect and classify brain signals. 
+%
+One source of this variability in the \ac{EEG} is related to changes in the
+user state. For example, differences in levels of alertness, fatigue,
+frustration and workload level can alter the characteristics of the \ac{EEG}.
+This variability violates basic assumptions made by \ac{ML} methods used to
+train the \ac{BCI} classifier, and can result in a loss of performance during
+the application of the \ac{BCI} \cite{shenoy2006tac, blankertz2007ics,
+krauledat2008tzt}. 
+%
+Most of the published work on non-stationary signals in \acp{BCI} focusses on
+the changing distribution of the \ac{EEG}, and explicitly attempts to reduce
+feature variability over time \cite{hill2006tdd, tomioka2006asf,
+blankertz2007ics, bunau2009ssa, meinecke2009lis}, or alternatively, to adapt
+the classifiers parameters to the changing distribution \cite{shenoy2006tac,
+vidaurre2007sol}.
+%
+An unsolved problem is that it is unclear how variability in the feature
+distributions influences the \ac{BCI} performance, since commonly used spatial
+filtering methods can already remove task-irrelevant fluctuations to some
+degree. In this case, attempting to remove the variability could introduce new
+problems that are caused by difficulties in estimating the unrelated
+variability in \ac{EEG} features.
+
+Both key issues are interrelated, since they are based on not fully
+understood properties of fluctuation in feature distributions over time,
+sessions and subjects. In this dissertation, we will investigate the nature of
+these variations in the \ac{EEG} distributions, and present two new,
+complementary methods that we have devised to overcome the key
+issues we have described.
+
+\section{Contributions}
+\todo{MP: Add more detail to the contributions}
+To ground the problem, we will show in Chapter~\ref{chap:loc} that even changes
+in the mental state of the user can induce changes in the \ac{EEG} signals, and
+that \acp{BCI} based on commonly used signal features are sensitive to these
+changes. 
+%
+We will proceed in Chapter~\ref{chap:sob} by describing a method aimed at
+removing these changes in signal feature distributions. Based on the insight
+that a large class of \acp{BCI} are based on \emph{relative changes} in
+spectral power, but uses absolute power for classification, we will describe
+the new \ac{SOB} features that specifically isolate these changes in neural
+firing synchrony, thereby removing long-term and subject-specific deviations.
+%
+Still, the assumption made by \ac{ML} methods that the training data contains
+samples that are \ac{IID} is violated, since samples nearby in time are highly
+correlated. This temporal dependence is especially troublesome during the
+training of the classifier: due to the overestimation of the amount of
+independent information contained in the training set it leads to overfitting.
+%
+In Chapter~\ref{chap:dsvm} we will present a generalization of the well known
+\ac{SVM} classifier, that takes the temporal dependence of features (and hence
+the dependence of classification errors) into account. Both on artificial data
+and real \ac{BCI} data, overfitting is reduced with this \ac{dSVM}, leading to
+an increased information throughput.
+

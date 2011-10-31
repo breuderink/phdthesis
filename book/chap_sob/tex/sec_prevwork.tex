@@ -1,0 +1,46 @@
+\section{Previous Work}
+Progress has been made to make \ac{ML} based \acp{BCI} generalize
+to new sessions and new users.
+%
+The \acl{ZT} method described in \cite{krauledat2008tzt} is one of the first
+attempts to extend the applicability of the popular \ac{CSP} algorithm to
+generalize from one session to another session. The method attempts to find
+prototypical spatial filters from past sessions of a specific subject, and uses
+a small number of trials of the current session to update the \ac{BCI}
+classifier. Using these prototypical filters a performance similar to \ac{CSP}
+performance was obtained. Although this result is a promising step towards
+\acl{ZT}, historical \ac{EEG} data and a minimal calibration session are still
+required.
+
+% fazli2009sim
+To overcome these limitations, an ensemble method \cite{fazli2009sim} was
+developed that selects a sparse set of \ac{SD} spatio-spectral filters derived
+from a large database with the recordings of 45 subjects. With a wide-band
+frequency filter (as used in our study), a \ac{SI} classifier performed almost
+as well (68\% correct) as the average \ac{SD} \ac{CSP} classifier (70\%
+correct). However, the \ac{SI} classifier's predictions were post-processed
+with a non-causal bias-correction, which prevents online application. Without
+post-processing the best \ac{SI} classifier still scores much lower than the
+\ac{SD} classifiers with 63\% of the trials correctly classified.
+
+% lotte2009cdt
+Combinations of different feature extraction methods and different classifiers
+were compared on their ability to discriminate between classes of imaginary
+movement in unseen subjects in \cite{lotte2009cdt}.
+% An accuracy is 75\% was obtained with \ac{SD} \ac{CSP} transformed
+% log-variance features, but when the same classifier was applied in a \ac{SI}
+% configuration, the accuracy dropped to 65\%. 
+%
+Of all tested combinations, a filter-bank \ac{CSP} classifier that used
+frequency filters with different bandwidths had the best \ac{SI} performance
+(71\% correct). This is slightly above the \ac{SI} performance of naive log
+band-power features (68\%), and far below 
+%the \ac{SD} \ac{CSP} classifier (75\%) and 
+the best \ac{SD} classifier (82\%).
+
+These three studies indicate that constructing an \ac{SI} \ac{BCI} classifier
+that generalizes to new subjects is quite challenging. With complex feature
+extraction as done in \cite{lotte2009cdt} and spatial filter matching as done in
+\cite{krauledat2008tzt, fazli2009sim}, the performance can approach the
+\ac{SD} \ac{CSP} performance.  
+

@@ -1,0 +1,111 @@
+\RequirePackage[12tabu,orthodox]{nag}
+\documentclass[b5paper,
+  %draft,
+  ]{book}
+
+\usepackage[pdftex]{graphicx}
+\graphicspath{
+  {figs/}
+  {chap_loc/figs/}
+  {chap_sob/figs/}
+  {chap_dsvm/figs/}
+  }
+
+\usepackage{import}
+\usepackage[hide]{todo}
+\usepackage{lineno}
+\usepackage[utf8]{inputenc} % for Dutch summary
+
+% setup math environment
+\usepackage{amssymb,amsmath}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\vect}{vec}
+\DeclareMathOperator{\med}{med}
+\providecommand{\Det}[1]{\lvert#1\rvert} % \det does already exist
+\providecommand{\norm}[1]{\lVert#1\rVert}
+\providecommand{\frob}[1]{\lVert#1\rVert_F}
+
+% references
+\usepackage[numbers]{natbib}
+\usepackage{multibib}
+\newcites{pub}{Publication list}
+
+% layout
+% http://stackoverflow.com/questions/2565755/latex-book-class-twosided-document-with-wrong-margins
+\usepackage{layout}
+\usepackage[bindingoffset=2cm]{geometry}
+\usepackage{nextpage} % \cleartoevenpage etc.
+\usepackage{lettrine} % big capital to start chapter
+\usepackage{rotating} % sideways figures
+\usepackage{tocbibind} % include all appendices in TOC
+\usepackage{multicol} % for SIKS list
+\usepackage[dutch,british]{babel}
+\hyphenation{res-ponse com-pu-ter}
+
+% setup tables
+\usepackage{booktabs}
+\usepackage{dcolumn} % see also the numprint package!
+\newcolumntype{.}{D{.}{.}{-1}}
+
+% setup links
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{pdfborder=0}
+
+% change font
+\usepackage[T1]{fontenc}
+\usepackage[adobe-utopia]{mathdesign}
+\usepackage[small,bf,font={it}]{caption}
+
+% make acronyms available
+\usepackage[acronym,shortcuts]{glossaries} 
+\input{tex/acronyms.tex}
+
+\begin{document}
+%\layout % shows layout parameters
+%\linenumbers % show line numbers
+
+\frontmatter % roman page number, unnumbered chapters
+\input{tex/title.tex}
+
+\subimport{chap_preface/}{preface}
+\tableofcontents
+\input{tex/samenvatting.tex}
+\input{tex/summary.tex}
+\glsresetall
+
+\mainmatter % arabic page numbers, numbered chapters
+\subimport{chap_intro/}{intro}
+\subimport{chap_loc/}{chap_loc}
+\subimport{chap_sob/}{chap_sob}
+\subimport{chap_dsvm/}{chap_dsvm}
+\glsresetall
+\subimport{chap_conclusions/}{conclusions}
+
+\backmatter % arabic page numbers, unnumbered chapters
+\bibliographystyle{plainnat}
+\bibliography{bibs/breuderink_defs,bibs/breuderink,bibs/breuderink_pub,bibs/breuderink_prep}
+
+\appendix
+
+\input{tex/app_notation.tex}
+
+%\chapter{Portfolio}
+% Generate publication list
+\nocitepub{reuderink2012vad, hakvoort2011cpc, plass-oudebos2011lay,
+reuderink2011sib, reuderink2011ilc, vandelaar2011hhi, plass-oudebos2010hci,
+plass-oudebos2010bci, reuderink2010sss, vandelaar2010eue, vanvliet2010gwy,
+nijholt2009tsc2, nijholt2009tsc, reuderink2009apf, vandelaar2009aim, 
+oudebos2008bbg, reuderink2008gbc, reuderink2008rcs}
+
+\bibliographystylepub{plainnat}
+\bibliographypub{bibs/breuderink_defs,bibs/breuderink_pub,bibs/breuderink_prep}
+
+\input{tex/app_siks.tex}
+
+\todos
+
+\end{document}

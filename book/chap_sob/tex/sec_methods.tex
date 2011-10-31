@@ -1,0 +1,238 @@
+\section{Methods}
+During the initiation of imaginary movement, an \ac{ERD} in the $\mu$-band is
+often observed in the motor cortices. For \acp{BCI} based on \ac{ERD}, the
+spatially filtered \ac{EEG} is used to compute band-power related features
+which are then classified with a linear classifier. 
+
+\begin{sloppypar}
+Unrelated changes in the \ac{EEG} signal that manifest over time pose a problem
+for this classification scheme, because the power, and not the change in power
+is used to classify the individual trials. To counter this problem, a pre-trial
+baseline is often used in neuroscientific experiments; for
+example, the trial power spectrum is often divided by the power spectrum
+obtained from a pre-trial baseline to study the \ac{ERD}. Surprisingly,
+baselining is rarely used for \acp{BCI}, one exception being
+\cite{kronegg2007ebs} where it did indeed result in a performance improvement.
+%
+In this chapter we propose a new feature domain for \ac{ERD} classification
+that uses a multi-variate pre-trial baseline to reduce the covariance between
+the \ac{EEG} channels. Before we describe our baselining approach in more
+detail, we will re-introduce the \ac{CSP} pipeline that serves as a control in
+this work.
+\end{sloppypar}
+
+\subsection{CSP classification}\label{sec:CSP}
+The \ac{CSP} algorithm  \cite{koles1991qet, ramoser2000osf} was designed to find
+a set of $m$ spatial filters that have a maximally different mean variance
+(band power) for two classes:
+\begin{align}
+  \Sigma_{WX} &= I \label{eq:csp_white}\\
+  \Sigma_{WX_+} &= D \label{eq:csp_rot},
+\end{align}
+where $\Sigma_{WX}$ is the channel covariance of the band-pass filtered
+\ac{EEG} signal $X$ multiplied by the spatial filter matrix $W$, $X_+$ is the
+\ac{EEG} signal generated during one specific task, I is the identity matrix and
+D is a diagonal matrix. The \ac{CSP} transform can be decomposed into an
+unsupervised whitening transform to satisfy \eqref{eq:csp_white}, and a
+class-specific (supervised) linear transformation to satisfy
+\eqref{eq:csp_rot}. Usually the $m=6$ filters corresponding to the
+$\frac{m}{2}$ smallest and largest eigenvalues in $D$ are used for
+classification, as extreme eigenvalues represent projections with the greatest
+mean difference in variance.
+
+After projecting a trial to this $m \times n$ space, the logarithm of the
+variance of these $m$ projections is typically used as a feature to
+automatically train a linear classifier. 
+The combination of the feature extraction and a trained classifier results in the follow classification function:
+%
+\begin{align} \label{eq:csp_lin}
+  f(X(i), \vec{w}, W) 
+  &= \sum_m w_m \log\left(
+    \left(\Sigma_{WX(i)}\right)_{m,m}
+    \right) + w_0
+\end{align}
+with bias $w_0$, feature weights $\vec{w}$, the $m$ spatial filters $W$, and
+trial $i$'s band-pass filtered signals $X(i)$. 
+%
+The variance of the projections is expressed with the diagonal of the
+covariance matrix $\diag(\Sigma)$.
+%
+Traditionally, the logarithm is used to convert the
+band-power features to an approximately normal distribution as assumed by
+\ac{LDA} classifiers, but the logarithm is not strictly necessary for classification.
+
+\subsection{Direct covariance classification}
+\begin{sloppypar}
+If we reformulate \eqref{eq:csp_lin} to work in the channel
+covariance ($\Sigma_{X(i)}$) space and drop the logarithm:
+\begin{align}
+  f(\Sigma_{X(i)}, \vec{w}, W) 
+  &= \sum_m w_m \left(W\Sigma_{X(i)}W^T\right)_{m,m} + w_0,
+\end{align}
+%
+we can see that $f(\Sigma_{X(i)})$ is just a linear transformation of the
+vectorized (flattened) trial covariance matrix denoted by $\vect
+\left(\Sigma_{X(i)}\right)$:
+%
+\begin{align}
+  f(\Sigma_{X(i)}, \vec{w}, W) 
+  &= \sum_m \vec{w}_m \left(W_{m,\cdot}\Sigma_{X(i)}(W_{m,\cdot})^T\right) + w_0
+\\
+  &= \sum \left(W^T \diag\left(\vec{w}\right) W\right) \circ \Sigma_{X(i)} + w_0
+  \label{eq:filter_fac}
+\\
+  &= \vec{u}^T \vect\left(\Sigma_{X(i)}\right) + w_0,
+  \label{eq:implicit_sf}
+\end{align}
+where $\circ$ is the Hadamard (element wise) product, $W_{m,\cdot}$ is the m-th
+row of $W$, and $\diag\left(\vec{w}\right)$ is a diagonal matrix containing the
+values of $\vec{w}$ on its diagonal.
+%
+The combination of the spatial filters and the band-power feature weights
+\begin{align}
+  \vec{u} = \vect \left(W^T\diag\left(\vec{w}\right)W\right)
+\end{align}
+can thus be modeled directly with a regularized linear classifier
+\cite{farquhar2009lfs}. This simplification enables the classifier to learn
+spatial filters simultaneously with the projection's variance weighting in a
+single, supervised learning step. 
+\end{sloppypar}
+
+For direct covariance classification, we have chosen to explicitly decorrelate
+the channels with a symmetric whitening transform $P$ that is estimated on the
+training trials to satisfy \eqref{eq:csp_white}:
+\begin{equation}
+  P = \Sigma_X^{-\frac{1}{2}} = U \Lambda^{-\frac{1}{2}} U^T 
+    \quad \text{with} \quad U \Lambda U^T = \Sigma_X,
+    \label{eq:white}
+\end{equation}
+and only learn the rotational spatial filters and their associated weights
+implicitly as in \eqref{eq:implicit_sf}  with a linear \ac{SVM}. Without this
+whitening transform, the \ac{SVM}'s $\ell_2$ regulariser strongly biasses the
+classifier to focus on high-powered sources that are probably not
+originating form the brain.
+
+In summary, we used the covariance of whitened trials as features to directly
+train a linear classifier that is, except for the log transform, almost
+equivalent to the commonly used \ac{CSP} pipeline.
+
+\subsection{Covariance classification with a second order-baseline}
+Likewise, the proposed \acf{SOB} method learns the spatial filters implicitly,
+but instead of the static whitening transform \eqref{eq:white} a pre-trial
+baseline is used to \emph{adaptively} normalize ongoing second order covariance
+statistics.
+
+We estimated a whitening transform $P(i)$ for each trial $i$ based on past
+pre-trial baselines, and applied this transform to the data of the trial itself.
+Without a change in brain activity, the covariance during normalized trial
+$P(i)X(i)$ would approximate the identity matrix, even during (slow) sensor
+covariance changes. But when the coupling between or the power in certain
+brain regions changes, a perturbation appears in the sensor covariance during
+the normalized trial. This perturbation can be used for classification.
+%
+The specific whitening transform \eqref{eq:white} has the crucial property that
+it removes correlations, but at the same time minimizes the distorting to
+preserve the relation between projections and locations on the scalp. This
+preserves the task-relevant topography, which is needed to have consistent
+features over time and over subjects.
+%
+A similar normalization procedure was outlined in \cite{tomioka2006asf} to
+adapt the session covariance matrix in order to reduce the influence of
+non-stationarities. The main differences between our method and
+\cite{tomioka2006asf} is that in our method each trial is normalized
+differently based on the pre-trial baseline, and that this baseline period is
+used to estimate the resting state covariance instead of the global session
+covariance.
+
+\begin{sloppypar}
+Estimating the symmetrical whitening transform from the pre-trial baseline
+covariance $\Sigma_{B(i)}$ for trial $i$ is difficult, since there is a large
+number of parameters to estimate from a few independent samples for the $s$
+sensors. To improve the robustness, we used the regularized Ledoit-Wolf
+covariance estimator \cite{ledoit2004wce}, and used an \ac{EWMA} to combine the
+baseline covariance of past trials into a covariance estimate $\Sigma_B(i)$
+for the baseline of trial $i$:
+%
+\begin{equation} 
+  \hat\Sigma_{B(i)} = \alpha S^*_{B(i)} + (1 - \alpha) \hat\Sigma_{B(i-1)}, 
+\end{equation} 
+%
+where $S^*_{B(i)}$ is the Ledoit-Wolf covariance estimate of the baseline before
+trial $i$, and $\alpha$ is known as the forgetting factor that determines the
+rate of adaptation. With 
+\begin{align}
+  \alpha = 1-\sqrt[n]{\tfrac{1}{2}}
+\end{align}
+%
+the forgetting factor $\alpha$ is then associated with a decay that halves in
+$n$ trials.
+\end{sloppypar}
+
+Specifically, we calculate a whitening transform $P(i)$ for each of
+the trials $X(i)$ based on $\hat\Sigma_{B(i)}$, and apply this $P(i)$ to the Ledoit-Wolf covariance estimate of
+the current trial $S^*_{X(i)}$:
+%
+\begin{equation}
+\tilde{X(i)} = P(i) S^*_{X(i)} P(i)^T \quad \text{with} \quad 
+  P(i) = \Sigma_{B(i)}^{-\frac{1}{2}}.
+\end{equation}
+The new features $\vect \left(\tilde{X(i)}\right)$ are more robust against time
+and subject related variations, but are still sensitive to task-related (co)variance changes.
+
+\subsection{Dataset}
+To evaluate the performance of the invariant features we used the movement
+imagery dataset\footnote{\url{http://www.physionet.org/pn4/eegmmidb/}} from the
+experiment described in \cite{schalk2004bgp} contributed to Physiobank
+\cite{goldberger2000ppp}. This dataset contains sessions of 109 different
+subjects with trials for actual and imagined movement \cite{schalk2011pc}.
+The \ac{EEG} was recorded with 64 electrodes positioned spread over the scalp according to the international 10-10 system, sampled at 160~Hz.
+
+\begin{sloppypar}
+We have chosen to use the blocks where the subjects had to imagine either
+movement of both feet or movement with both hands, as a preliminary experiment
+indicated that \ac{BCI} classification performance above chance level can be
+obtained with small training sets. There are about 22 trial per class for each
+subject.
+\end{sloppypar}
+
+\subsection{Preprocessing}
+To preprocess the data, we applied a 6th-order Butterworth notch filter at
+60~Hz, applied a 6th-order Butterworth filter between 8--30~Hz and extracted
+trials for movement imagery of both hands or of both feet in the interval from
+$[-2, 4]$~s after the stimulus. 
+%
+All evaluated methods used the same interval $[0.5, 4]$~s after the stimulus
+presentation for classification. For the \ac{SOB} method, the interval $[-2,
+0]$~s was used to estimate the pre-trial baseline. The same preprocessing was
+used for all \ac{BCI} classifiers.
+
+\subsection{Evaluation}
+\begin{sloppypar}
+We used two \ac{CSP}-based pipelines and a \ac{logBP} based pipeline as a
+comparison method in both an \ac{SD} and an \ac{SI} \ac{BCI} classification
+scheme. One \ac{CSP} pipeline was based on \ac{CSP} projected log band-power
+features classified with an \ac{LDA}, the other \ac{CSP} classifiers used
+band-power features without the log transform, classified with a linear
+soft-margin \ac{SVM} \cite{cortes1995svn}. The \ac{logBP} classifiers simply
+used the variance of each band-pass filtered channel as a feature for a linear
+\ac{SVM}. The whitened covariance features and \ac{SOB} normalized covariance
+features were also classified with a linear \ac{SVM}. The \ac{SVM}'s
+$c$-parameter was always estimated using a sequential (chronological) 5-fold
+cross-validation procedure with a logarithmic step size for the $c$-values, on
+the training set.
+\end{sloppypar}
+
+To evaluate these classifiers in an \ac{SD} context, the first half of the
+session was used for training, and the second half was used for evaluation.
+This simulates a calibration and application session, respectively.
+Chronological separation of training and test set is needed since random splits
+lead to overly optimistic performance estimates. As the dataset also
+contains blocks with other mental tasks, we have only about 22 trials in total
+for training and 22 trials for evaluation per subject.
+
+The performance of \ac{SI} application was assessed by training an \ac{SI}
+classifier on the first 50 users, and then applying the classifier to the test
+set formed from the remaining 51 subjects (we removed 8 subjects from the test
+pool because they had fewer trials). The final \ac{SI} performance was
+calculated on the second half of the predictions for these 51 test subjects to
+allow for a paired comparison with the \ac{SD} classifiers.

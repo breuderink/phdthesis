@@ -1,0 +1,50 @@
+\section{Conclusions and future work}
+\begin{sloppypar}
+We have presented an \ac{SOB} procedure that reduces inter-subject and
+inter-session variability, and demonstrated that \ac{SOB}-covariance features
+allow for cross-subject motor imagery classification without a loss of
+performance compared to within-subject classification with the popular \ac{CSP}
+based \ac{BCI} classifier.
+%
+The advantage of the \ac{SOB} based covariance features is that they are robust
+against inter-session and inter-subject variation, and that standard
+classifiers such as the \ac{SVM} can be used without the need of any adaptation
+or post-processing of the outputs (e.g. bias-adaptation).
+%
+Furthermore, the online processing is simplified as it can be implemented as a
+stateless, fixed pipeline that does not handle the incoming data differently
+during a calibration session.
+
+In addition to the practical advantages of removing the need for the laborious
+calibration sessions, changing from \acl{SD} to \acl{SI} \acp{BCI} also
+simplifies multi-disciplinary \ac{BCI} research. It allows researchers to work
+with validated \ac{BCI} classifiers that are known to work with a certain
+probability on the target population, and focusses on the intended brain
+regions.
+% 
+The development of \acl{SI} \acp{BCI} can facilitate new applications for which
+collecting enough subject-specific training data before each session is not
+feasible, such as for example fatigue detection, screening of neurological
+disorders or classification of emotional states.
+\end{sloppypar}
+
+The method described uses a single, broad frequency band. For future work, the
+features can be extended to include multiple frequency bands as in
+\cite{lotte2009cdt, farquhar2009lfs}. Work with naive \ac{BCI} has shown that subject-specific frequency bands can dramatically improve performance \cite{blankertz2008bbc}.
+ 
+\begin{sloppypar}
+Another interesting research direction is to generalize to recordings with
+different electrode layouts. As the learned covariance weights were quite
+sparse, the correspondence of a few key sensor locations might be enough to
+generalize to new sensor configurations. This sparsity in covariance space
+seems to suggest that it is more natural to think in covariance (or coherence)
+between brain regions, than to think of power in spatially filtered sources.
+The second row in Figure~\ref{fig:ud_patt} shows spatial filters with a dipolar
+structure on the motor cortices. The combination of these and many more filters
+is needed to isolate a specific covariance pair --- that is, the intriguing
+dipolar structure is probably residue caused by the decomposition of the weight
+matrix.
+\end{sloppypar}
+
+Finally, although the method presented works causally, it should be validated in
+an online experiment with a user in the loop.

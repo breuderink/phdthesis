@@ -1,0 +1,87 @@
+\chapter{Summary}
+\lettrine{A}{} \ac{BCI} enables direct communication from the brain to devices,
+bypassing the traditional pathway of peripheral nerves and muscles. Usually,
+\acp{BCI} are targeted at paralysed patients who have no other means of
+communication. The \ac{BCI} research at our \acl{HMI} group focusses on
+\acp{BCI} for healthy users, especially on gaming applications, which poses
+some additional requirements on the \ac{BCI}.
+  
+For successful \ac{BCI} adoption in general, two key issues need to be
+addressed: 1) using a \ac{BCI} should be easy, and require only small
+investments (of either time or money), and 2) the \ac{BCI} should be
+dependable, that is to say it should function predictably with a known
+accuracy.
+%
+In addition, a \ac{BCI} should be applied such that it provides something 
+unique (e.g. a covert measure of attention), since \acp{BCI} cannot yet compete
+on reliability and speed with existing input devices for non-patients. 
+
+\begin{sloppypar}
+The first key issue excludes the possibility that brain signals are recorded
+with expensive medical brain-imaging equipment. Fortunately, relatively cheap
+consumer hardware with semi-dry \ac{EEG} sensors is already commercially
+available, solving the problem of monetary investments to a large extent. What
+remains is that non-paralysed users are probably not willing to invest weeks or
+even months to learn the skill to intentionally modify their brain signals,
+which is common practice with traditional \acp{BCI} aimed at patients.
+\Acp{BCI} based on machine learning already reduce the problem of time
+investment from weeks to minutes, through automatic recognition of the user's
+naturally occurring brain signals. But still, a demanding and error-prone
+calibration session (in which the user is forced to demonstrate mental tasks)
+is required before each use of the \ac{BCI}. This calibration session is needed
+because the electrical brain signals vary from session to session. Removing this
+need of a repeated training session would greatly expand the applicability of
+\acp{BCI}, and lower the barrier to entry.
+\end{sloppypar}
+
+The second key issue is related to the fundamental problem that is known in the
+\ac{BCI} field as non-stationary signals. The inherent variable nature of
+spontaneous \ac{EEG} causes changes in the features that the \ac{BCI} uses to
+detect and classify brain signals. This variability violates basic assumptions
+made by the \ac{ML} methods used to train the \ac{BCI} classifier, and causes
+the classification accuracy to fluctuate unpredictably. These fluctuations make
+the current generation of \acp{BCI} unreliable.
+
+Both key issues are related; both the inter-session variability and the
+unreliability stem from not fully understood properties of fluctuation in the
+neuronal signal's feature distributions over time, sessions, and subjects. In
+this dissertation, we will investigate the nature of these variations in the
+\ac{EEG} distributions, and introduce two new, complementary methods that we
+have devised to overcome these two key issues.
+ 
+To confirm the problem of non-stationary brain signals, we first show that
+\acp{BCI} based on commonly used signal features are sensitive to changes in
+the mental state of the user.
+% 
+We proceed by describing a method aimed at removing these changes in signal
+feature distributions. Based on the insight that a large class of \acp{BCI} is
+based on \emph{relative changes} in spectral power, but uses absolute power for
+classification, we have devised a method that uses a \ac{SOB} to specifically
+isolate these relative changes in neuronal firing synchrony. To the best of our
+knowledge this is the first \ac{BCI} classifier that works on out-of-sample
+subjects without any loss of performance.
+%
+With these \ac{SOB} features, we have effectively bypassed the problem of
+slowly changing non-stationary distributions. Still, the assumption made by
+\ac{ML} methods, that the training data contains samples that are \ac{IID}, is
+violated, because \ac{EEG} samples nearby in time are highly correlated. This
+chronological structure is especially troublesome during the training of the
+classifier, since it may lead to overfitting due to an overestimation of the
+amount of independent information present in the calibration session.
+%
+We derived a generalization of the well-known \ac{SVM} classifier, that takes
+the chronological structure of classification errors into account. Both on
+artificial data and real \ac{BCI} data, overfitting is reduced with this
+\ac{dSVM}, leading to \acp{BCI} with an increased information throughput.
+
+With the \ac{SOB} features we have addressed the first key issue (of investment
+of time) for a motor imagery task. It is likely that this approach also allows
+for cross-subject generalization of classifiers based on other neuronal
+signatures. The second key issue is partially addressed with the \ac{dSVM}. The
+method demonstrates the feasibility of modeling the relatedness of brain
+signals recorded nearby in time, which is necessary to prevent overfitting in
+high-dimensional feature spaces derived from \ac{EEG}. But, not assuming
+\ac{IID} feature distributions raises new questions regarding the
+interpretation of \ac{BCI} performance. With the two methods presented in this
+dissertation, we have paved the way for a new generation of \acp{BCI} --- \acp{BCI}
+that work dependably, and without the need of recalibration.

@@ -1,0 +1,19 @@
+The results on the artificial dataset and on the real \ac{BCI} datasets
+indicate that modeling the inter-dependency of training instances can improve
+the classification performance. On the \ac{BCI} dataset, we have quite a few
+subjects for which the classifiers perform at chance level. This is, however, a
+property of the dataset, and not a limitation of the \ac{dSVM}. 
+%
+For the subjects that had classifiable brain signals, the performance improved
+in general. Particularly promising is the observation that the best performing
+subject displayed the biggest improvement in performance. The question
+remains how this result would generalize to more traditional \ac{BCI} datasets
+that are more easily classified, and generally have much smaller training sets.
+ 
+We demonstrated that the modeling the interdependence of the training data can
+be helpful. Other methods that attempt to constrain the undesirable influence of
+non-stationary feature distributions have focused mainly on the changes in the
+distribution. The \ac{dSVM} and these methods are complementary; to assess
+their efficacy they should be evaluated in combination, since features for
+\ac{BCI} data probably violates both the independence and the identically
+distributed assumption.

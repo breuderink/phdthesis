@@ -1,0 +1,220 @@
+\section{Results}
+\subsection{Subjects}
+Twelve healthy users (age $27 \pm 3.9$) participated in the experiment.  All
+participants had normal, or corrected to normal vision, and reported not to use
+medication. Only three of our subjects were female, and all subjects were
+right-handed. Most participants had some video game experience, and four
+subjects had previous experience with \acp{BCI}.
+
+\subsection{Self assessments}
+To verify the induction of changes in the mental state, we analysed the self
+reported emotional ratings of the \ac{SAM}. Most subjects rated the \ac{LOC}
+condition more negatively than the normal condition, over subjects this
+difference was significant ($T$=3, $p$\textless 0.01). While we expected to
+find a trend towards more arousal in the \ac{LOC} condition, there was no
+significant difference ($T$=23, $p$=0.26). The dominance dimension, which
+measures the amount of dominance, or control they have on their environment,
+indicate that people seemed to be significantly ($T$=3.5, $p$\textless 0.01)
+more in control in the normal condition.
+
+
+\begin{figure}
+  \center
+  \includegraphics[width=3.5in]{key_duration.pdf}
+  \caption{The histogram for the time between key presses during game play for
+  all subjects. The intervals for the normal condition are displayed in black,
+  the \protect\ac{LOC} condition is displayed in red (gray). The histogram is
+  dominated by short $\Delta t$'s between key presses. The histogram of the
+  \protect\ac{LOC} condition seems to be slightly more pinched around half a
+  second.}
+  \label{fig:key_duration}
+\end{figure}
+
+\begin{figure}
+  \center
+  \includegraphics[width=3.5in]{emg_cond.pdf}
+  \caption{The mean log \protect\ac{EMG} power and its standard deviation
+  (dashed lines) is displayed for both the normal and \protect\ac{LOC}
+  condition, time-locked to the key press at $t=0$. The top plot shows the EMG
+  power of the left bipolar channel for left index-finger presses, the bottom
+  plot show the EMG power for right hand movement measured with the right
+  bipolar channel.}
+  \label{fig:emg_cond}
+\end{figure}
+
+\begin{table}
+  \caption{Statistics of confounding variables. The repetitiveness (second
+  column) and log-\protect\ac{EMG} power (last column) differ significantly
+  between the conditions. The \protect\ac{EMG} power was quantified as the
+  maximum power in the interval [-0.2,~0]~s. The start and end of the arrow
+  signify the mean value in the normal and \protect{LOC} condition
+  respectively.} 
+  \center \footnotesize
+  \input{tex/tab_confounds.tex}
+  \label{tab:confounds} 
+\end{table}
+
+\subsection{Confounding behavioural differences} \label{sec:behav} 
+In this section we describe the analysis of the characteristics of the user's
+behaviour, as it might have had a confounding influence on the \ac{BCI}
+performance. 
+%
+Both differences in the \ac{ITI}, and the pattern of consecutive keystrokes
+can indicate a confounding behavioural change. The per-subject statistics for
+these confounding factors are presented in Table~\ref{tab:confounds}. For the
+log \ac{ITI}, we see an insignificant tendency to shorter intervals between key
+presses in the \ac{LOC} condition. The probability that a key press was made
+with the same hand is significantly higher in the \ac{LOC} condition. This may have been caused by increased repetition, by increased imbalance of the class ratios,
+or a combination thereof. Nevertheless, it indicates a significant behavioural
+change.
+
+The temporal development of the \ac{EMG} signal is displayed in
+Fig.~\ref{fig:emg_cond}. An increase in the \ac{EMG} power is visible just
+before the stroke is registered, and a much weaker increase is visible when the
+key is released. Most of the activity is registered in the interval [-0.2, 0]~s
+relative to the registration of the key press. We used the maximum \ac{EMG}
+power in this interval to estimate the force used to press a key (see
+Table~\ref{tab:confounds}). Movements with the right index finger produce
+significantly more \ac{EMG} power in the \ac{LOC} condition.
+
+\begin{figure}
+  \center
+  \includegraphics[width=\textwidth]{eog_cond.pdf}
+  \caption{The vertical eye movement (first row) show downward eye-gaze just
+  after a keystroke at $t=0$. The horizontal bipolar \protect\ac{EOG} channel
+  is rather uneventful, only for right hand movement (last column) does there
+  appear to be a delayed reaction to the key press, first negative (looking
+  left) then positive (looking right). The dashed lines indicate the standard
+  deviation.  There is no significant difference (16 point Bonferroni corrected
+  Wilcoxon signed-rank test over subjects) between the normal (black) and
+  \protect\ac{LOC} condition (red).}
+  \label{fig:eog_cond}
+\end{figure}
+
+Although we removed (most) of the influence of the \ac{EOG} signal from the
+\ac{EEG}, it is interesting to look at the user's gaze and blink behaviour
+during a key press (Fig.~\ref{fig:eog_cond}). We can see that users tend to
+look at their hands 200~ms after a key press, which is most visible in the
+vertical \ac{EOG}, and at 300~ms, the variability of the vertical \ac{EOG}
+signal seems to increase. This might be caused by eye-blinks, or an adjustment
+to the new movement direction of the avatar in the game. 
+
+In summary, our behaviour analysis has shown that the normal and
+\ac{LOC}-con\-di\-tions are very similar in the timing, the predictability of
+the key\-strokes, the amount of force used to press the keys, and in eye
+movements. However, there was a small but significant increase in repetition of
+the same movement, and a small significant increase in the force used with the
+right hand. After balancing the confounding variables and their interactions
+per subject, on average 25\% of the original trials were removed.
+
+\subsection{Impact of loss of control on the BCI}
+To investigate the influence of \ac{LOC} on the \ac{BCI} performance, we
+trained the \ac{ERD} based and the \ac{ERP}-based classifier on blocks from the
+normal condition, and compared the performance on unseen normal blocks with the
+performance on blocks from the \ac{LOC} condition. Please refer to
+Section~\ref{sec:dga} for more information on this procedure.
+
+\begin{table*} 
+  \caption{The influence of \protect\ac{LOC} on a \protect\ac{CSP} classifier
+  is shown below, without correction for confounding factors. The start and end
+  of the arrow indicate the median performance for the normal and
+  \protect\ac{LOC} condition respectively. The $p$-value of a Mann-Whitney U
+  test on the per-block performance is displayed above the arrow. The row
+  denoted with ``Wilc.'' signifies the over-subject comparison with the Wilcoxon
+  signed rank test. The row denoted by ``Fish.'' presents the results of
+  combining one-sided $p$-values for an increase in performance.}
+  \center \scriptsize
+  \input{tex/tab_csp.tex}
+  \label{tab:csp}
+\end{table*}
+
+\begin{table*} 
+  \caption{The influence of \protect\ac{LOC} on a \protect\ac{CSP} classifier
+  is shown below, with correction for confounding factors enabled. Please refer
+  to Table~\ref{tab:csp} for an explanation. } 
+  \center \scriptsize
+  \input{tex/tab_csp_bal.tex}
+  \label{tab:csp_bal}
+\end{table*}
+
+The performance of the \ac{CSP} based features classifier on the normal and
+\ac{LOC} blocks without correction for confounds is displayed in
+Table~\ref{tab:csp}. The single trial detection accuracy may seem rather low
+(60\%), but this is similar to the accuracies obtained in other studies that
+use short \acp{ITI}, such as \cite{jatzev2008ecn}. This was also reflected in
+the mean \ac{ITR} of 5.5 bits per minute, which is comparable to the \acp{ITR}
+obtained by naive users with motor-imagery based \ac{ERD} \acp{BCI}.
+%
+Despite this low recognition rate, the \ac{ERD} \acp{BCI} performance did
+significantly \emph{increase} in the \ac{LOC} condition for the \ac{AUC} and
+\ac{MI} measures.
+
+When correction for confounding factors was performed, the results were
+different (Table~\ref{tab:csp_bal}); the over-subject differences disappeared,
+but there were more significant within-subject differences in sometimes opposing
+directions. Combined with Fisher's method, the one-sided $p$-values for a
+within-subject increase in performance was significant for both \ac{AUC} and
+\ac{ITR}. This indicates at least one individual increase in performance was
+significant at the $\alpha=0.05$ level.
+
+\begin{sidewaysfigure}
+  \centering
+  \includegraphics[width=\textwidth]{figs/bp_nlc.pdf}
+  \caption{
+  These scalp plots display the difference between left and right hand movement
+  in the normal (first row) and \protect\ac{LOC} condition (second row), and
+  the difference between the normal and \protect\ac{LOC} in the last row. 
+  %
+  The color encodes the \protect\ac{AUC}-\protect\ac{ROC} ranking performance
+  of the 8--30~Hz band power at the specified location; red indicates a
+  positive rank correlation with the target class (right hand for the first two
+  rows, or \protect\ac{LOC} in the last), blue a negative correlation. The
+  conditions were corrected for confounding factors with frequency matching.
+  %
+  Most subjects display a more pronounced spatial activation in
+  the \protect\ac{LOC} condition.}
+  \label{fig:ERD_diff} 
+\end{sidewaysfigure}
+
+\begin{sloppypar}
+The spatial distribution of the movement related \ac{ERD} is shown in
+Fig.~\ref{fig:ERD_diff}. Subjects S0, S1, S5,  S9 and S10 do display the
+prototypical \ac{ERD} on the motor cortices. Remarkably, these activations are
+more pronounced in the \ac{LOC} condition (second row), which supports the
+observed increase in performance. 
+%
+Note that the \ac{CSP} classification is based on covariance of the \ac{EEG}
+channels, while in this figure only the variance is shown. 
+\end{sloppypar}
+
+
+\begin{table*}
+  \caption{The influence of \protect\ac{LOC} on a \protect\ac{ERP} classifier
+  is shown below, without correction for confounding factors. Please refer to
+  Table~\ref{tab:csp} for an explanation.}
+  \center \scriptsize
+  \input{tex/tab_wherp.tex}
+  \label{tab:wherp}
+\end{table*}
+
+\begin{table*}
+  \caption{The influence of \protect\ac{LOC} on a \protect\ac{ERP} classifier
+  is shown below, with correction for confounding factors enabled. Please refer
+  to Table~\ref{tab:csp} for an explanation.}
+  \center \scriptsize
+  \input{tex/tab_wherp_bal.tex}
+  \label{tab:wherp_bal}
+\end{table*}
+
+In contrast to the \ac{ERD} based classifiers, the \ac{ERP} classifiers had a
+constant high performance with a minimum \ac{ITR} of 11.6 bits per minute.
+Furthermore, they did not seem to behave differently in the \ac{LOC} 
+condition, not with (Table~\ref{tab:wherp_bal}) and not without correction for
+confounding factors (Table~\ref{tab:wherp}).
+%
+Visual inspection of the classifier's weights confirmed that the most
+discriminative features were located on the motor cortices, that is to say, the
+\ac{BCI} was based on brain activity.
+%
+The increase in performance for S8 is probably a false positive, since the
+combination over subjects with Fisher's method is not significant.

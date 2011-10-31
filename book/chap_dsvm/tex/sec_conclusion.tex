@@ -1,0 +1,22 @@
+In this chapter, we presented the \ac{dSVM}, which is a generalization of the
+soft-margin \ac{SVM}. The \ac{dSVM} is able to take the dependency of
+classification errors into account. Using a real \ac{BCI} dataset, we have
+demonstrated the feasibility of improving the performance on an unseen test set
+by modeling the temporal interdependence between the training instances.
+%
+Since the \ac{dSVM} and \ac{SOB} methods presented in Chapter~\ref{chap:sob} are
+complementary, they should be evaluated in combination. Correcting for the
+\ac{IID} assumption might finally give a estimate of the magnitude of the
+problems caused by non-stationary feature distributions in \ac{BCI}.
+
+For continuous classification of \ac{EEG} signals, features extracted with a
+sliding window might form a natural candidate for the \ac{dSVM}. 
+When the interdependence is less clear, it might be possible to learn the
+dependence function from the data. A naive method would be to iteratively
+re-estimate the covariance of margin errors. Including the estimation of this
+dependency function in the optimization criterion is an interesting direction
+for future research. We have taken the first steps in this direction in a logistic regression framework.
+
+An open problem is how the performance on non-\ac{IID} datasets should be
+assessed. We have chosen for the simple approach of using a robust statistic on
+multiple estimates. For future work, a well-founded, reliable method needs to be devised.

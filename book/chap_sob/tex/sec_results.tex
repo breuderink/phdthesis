@@ -1,0 +1,99 @@
+\section{Results}
+\subsection{\protect\Acl{SD} classification}
+
+The performance of the various control features is shown in
+Table~\ref{tab:sd}, as well as the performance on the newly proposed \ac{SOB}
+covariance features. For \acf{SD} classification, the \ac{LDA} classification of
+\ac{CSP} log-variance features had the highest mean accuracy. However, there was
+no significant difference between the performance of this \ac{CSP} pipeline and
+direct covariance classification (whcov \ac{SVM}), and the latter had a higher
+median performance (72.7\% accuracy). This demonstrates the feasibility of
+direct covariance classification.
+%
+The \ac{logBP} features performed much worse than the spatially filtered
+alternatives.
+%
+The \ac{SOB} features worked almost as well as the \ac{CSP} features when low
+$\alpha$-values were used; with faster adaption rates the \ac{SOB} did not
+perform as well with \ac{SD} application.
+
+\begin{table}
+  \caption{The \protect\acl{SD} accuracy of the different pipelines on the
+  last 22 trials of each session for the 51 test subjects.}
+  \center \label{tab:sd}
+  \input{tex/tab_sd_accuracy.tex}
+\end{table}
+
+\begin{table}
+  \caption{The \protect\acl{SI} accuracy of the different pipelines on the last
+  22 trials of each session for the 51 test subjects.}
+  \center \label{tab:si}
+  \input{tex/tab_si_accuracy.tex}
+\end{table}
+
+\begin{figure}
+  \center \includegraphics[width=2.3in]{sob_vs_csp.pdf} 
+  \caption{The accuracy of a \protect\acl{SD} \protect\ac{CSP} pipeline versus
+  the performance of a \protect\acl{SI} \protect\ac{SOB} pipeline. There is no
+  significant difference between the classifiers, despite the fact that the
+  \protect\ac{SOB} pipeline was not trained on the subject.}
+  \label{fig:csp_vs_sob}
+\end{figure}
+
+
+\subsection{\protect\Acl{SI} classification}
+\begin{sloppypar}
+The performance of the various control methods severely degraded due to
+inter-subject variability (Table~\ref{tab:si}) when these classifiers were
+applied in a \acf{SI} fashion.
+%
+The \ac{CSP} based classifiers, which did outperform the naive \ac{logBP}
+classifier with \acl{SD} training, now performed at the same level as \ac{logBP}
+classifier with \ac{SI} application --- the advantage that spatial filtering
+provided in the \ac{SD} training disappeared with \ac{SI} application.
+%
+The performance of the \ac{SOB} based predictions however, was not affected at
+all. The accuracy of the best \acl{SI} \ac{SOB}-based predictions was not even
+significantly different from the best \acl{SD} (\ac{CSP} log-variance \ac{LDA}
+based) predictions (p=0.16 with a Wilcoxon signed-rank test on 51 paired
+observations, see Fig.~\ref{fig:csp_vs_sob}).
+\end{sloppypar}
+ 
+The best \ac{SI} performance was obtained with a volatile baseline with a half
+life of 4 trials, while with \ac{SD} application the best results were obtained
+with long half lives (low $\alpha$'s). Note that even the worst performing
+\ac{SOB} classifier outperformed all of the control classifiers.
+%
+Fig.~\ref{fig:csob_acc} displays the fraction of correctly classified trials as
+a function of the amount of smoothing of the pre-trial baseline covariance. The
+best performance was obtained with a baseline half-life between 2--11 trials.
+
+\begin{figure}
+  \center \includegraphics[width=\textwidth]{si_hl_acc.pdf} 
+  \caption{The mean \protect\ac{SI} accuracy of the \protect\ac{SOB} as a
+  function of the half-life of the baseline estimate $\Sigma_{B(i)}$ of the
+  predictions on the last 22 trials of all the 59 test subjects. 
+  }
+  \label{fig:csob_acc}
+\end{figure}
+
+\begin{figure}
+  \center \includegraphics[width=4in]{ud_filters_scaled.pdf} 
+  \caption{The most influential spatial filters $W_{i,\cdot}$ for the best
+  \protect\ac{SI} \protect\ac{SOB} classifier scaled by the magnitude of their
+  weight $w_i$. The number above the plot is the weight $w_i$ (i.e. a positive
+  sign indicates filters with a response that corresponds to imagery of foot
+  movement, a negative sign indicates imagined hand movement). Most of the
+  contribution seems to originate from the motor areas, the central parietal
+  regions and the visual cortex.}
+  \label{fig:ud_patt}
+\end{figure}
+
+The most contributing spatial filters that were learned implicitly by the
+\ac{SI} \ac{SOB} covariance classifier are shown in Fig.~\ref{fig:ud_patt}.
+These filters can be easily extracted with an eigenvalue decomposition of the
+covariance matrix, see \eqref{eq:filter_fac}. The most relevant features
+originated from the motor cortex region, but also occipital and central
+parietal features contributed to the classifiers predictions. There was no
+apparent contribution of muscle or eye movement artifacts to the
+classification.

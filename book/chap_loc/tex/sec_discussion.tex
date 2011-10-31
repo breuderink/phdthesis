@@ -1,0 +1,53 @@
+\section{Discussion}
+We successfully induced a negative mental state with lack of feeling of control
+in the \ac{LOC} condition, as shown by the significant differences in the
+\ac{SAM} ratings.
+% 
+The performance of our \ac{ERD} classifier improved significantly in the
+\ac{LOC} condition. However, we did find small differences in the statistics of
+known confounding behaviour. After correcting for these factors, there still
+were differences in the performance of the \ac{CSP}-based \ac{BCI}. This
+difference in performance is probably caused by a change in feature
+distribution associated with the change in the mental state of the subject.
+
+% lower emotional contrast due to freq. match.
+The correction for confounding statistics could have reduced the contrast
+between the experimental conditions, since changes in behaviour and emotional
+state are interrelated and the behavioural changes were removed. This might
+explain why the over the over-subjects effect disappeared. After correction,
+more within-subject differences became significant, sometimes in opposing directions.
+%
+While correcting for confounding factors was necessary to exclude the
+possibility that the effects depend solely on the \ac{LOC} induction method,
+the results without correction are more ecologically valid, since increased
+effort and repeated attempts to perform the same action are to be expected when
+the \ac{BCI} fails.
+
+% improvement due to nonstat?
+It is surprising that the same \ac{ERD} classifier predicts the labels of data
+from a different distribution significantly better it predicts labels of the
+data with the distribution it was trained on. The significant differences in
+the \ac{AUC} values indicates that the improvement in the \ac{LOC} condition
+cannot be simply explained by a bias shift, since that would not account for improved ranking of trials. This suggests that the \ac{ERD}
+feature distributions of the two classes move away from the classifier's
+hyperplane in the \ac{LOC} condition.
+
+% comparison with Jatzev
+Our findings for the \ac{ERD} classifiers contradict the findings presented in
+\cite{jatzev2008ecn}, where a \emph{decrease} in performance for the \ac{LOC}
+condition was reported.   
+%
+On \ac{ERP} classification the studies do agree; \cite{jatzev2008ecn}
+reports no significant difference, and also in our study no significant effect
+was found for \ac{LRP} classification
+%
+The differences between our study and \cite{jatzev2008ecn} for \ac{ERD}
+classification could be caused by several differences in the experimental
+setup: a) our \ac{ITI} is about half the \ac{ITI} used in \cite{jatzev2008ecn},
+b) we did gather training and evaluation data in the same environment with the
+same user tasks, c) our subjects were not informed that the system would
+respond incorrectly, and d) unlike \cite{jatzev2008ecn}, we show that the
+performance differences between the two conditions were not (fully) caused by
+behavioural differences. But both our study and \cite{jatzev2008ecn} do agree
+that \ac{LOC} has a profound influence on the \ac{ERD} features.
+

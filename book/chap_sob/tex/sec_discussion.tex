@@ -1,0 +1,48 @@
+\section{Discussion}
+The results indicate that the new \acl{SOB} covariance features provide a
+robust alternative to \ac{CSP} features for classification of motor imagery,
+and generalize to new, unseen subjects without additional calibration or
+training. Apparently, the normalization performed with the \ac{SOB} removes
+enough inter-subject variability to generalize to new subjects.
+%
+However, the dataset used in this research contains rather few trials, hence
+the \ac{SD} \ac{CSP} performance might have suffered from insufficient training
+data. Nevertheless, recording more trials is not always an option, and the
+\ac{SD} performance obtained in our study is similar to scores presented in
+\cite{fazli2009sim} where much longer sessions were used. Further, when a
+similar \ac{SD} \ac{CSP} pipeline with a broadband spectral filter was applied
+to naive (i.e. users that have not used a \ac{BCI} before) users in
+\cite{blankertz2008bbc}, the results were barely above chance although
+280 trials were available for evaluation. The performance increased
+dramatically though when subject-specific \emph{spectral} filters were used. 
+
+The \ac{SOB}'s $\alpha$ parameter seems of some importance for generalization
+over subjects. While for \ac{SD} classification a long half-life was preferred,
+$\alpha$'s with a short half-life were preferred for \ac{SI} classification.
+%
+Presumably, slow adaptation is preferred for \ac{SD} classification because it
+allows the classifier to model and exploit session-specific variations, such as
+for example bad channels and \ac{EEG} artifacts. For \ac{SI} classifications
+modeling these variations is generally not helpful as they are not consistent
+over subjects. Shorter half-lives reduce these variations, and are thus
+preferred for \ac{SI} classification.
+ 
+\begin{sloppypar}
+It is noteworthy to mention that the best $\alpha$-value for
+\ac{SOB}-covariance features was selected based on the performance on
+the test subjects. This might slightly overestimate the true performance. 
+%
+Usually these hyper-parameters (e.g. the \ac{SVM}'s $c$-parameter) are set
+based on performance estimates obtained with cross-validation. The half-life
+constant $\alpha$ could be chosen with cross-validation, but since the \ac{SOB}
+is a preprocessing method this is often computationally impractical.
+%
+Since current \ac{BCI} pipelines have several preprocessing hyper-parameters
+that are fixed a priori (e.g. the cut-off values in the band-pass filter, or
+the $m=6$ spatial filters), we can imagine that a fixed $\alpha$ can be used as
+well. Given that even the worst $\alpha$ performs better than the alternatives
+in \ac{SI} classification, the performance gain seems fairly robust for a wide
+range of $\alpha$-values (Fig.~\ref{fig:csob_acc}). Therefore, we expect that
+choosing $\alpha=0.16$ (a half-life of 4 trials) a priori will be adequate in
+practice. This value is probably independent of the mental task used.
+\end{sloppypar}

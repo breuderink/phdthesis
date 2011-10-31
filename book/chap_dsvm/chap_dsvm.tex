@@ -1,0 +1,79 @@
+\chapter{An SVM for structured errors} \label{chap:dsvm}
+\begin{sloppypar}
+\lettrine{N}{on-stationary} feature distributions violate the basic assumption
+made by most \ac{ML} methods that the data is \ac{IID}. In
+Chapter~\ref{chap:sob}, we demonstrated for the first time that cross-subject
+\ac{EEG} classification is possible by making the training set's and test set's
+distribution similar with a normalization procedure. But this normalization
+procedure does not result in a performance gain with \acf{SD} application (i.e.
+the usual scenario where a calibration session is used before application).
+%
+This is consistent with prior work on non-stationary signals in \acp{BCI} that
+attempts to reduce feature variability over time \cite{hill2006tdd,
+tomioka2006asf, blankertz2007ics, bunau2009ssa, meinecke2009lis,
+reuderink2010sss} or alternatively to adapt the classifier's parameters to the
+changing distribution \cite{shenoy2006tac, vidaurre2007sol}, where at best
+modest improvements are reported.
+\end{sloppypar}
+
+It is unclear to what degree variability in the feature distributions
+influences the \ac{SD} \ac{BCI}, since the variable features might be
+irrelevant to the specific classification problem. The \ac{SSA} method
+\cite{bunau2009ssa, meinecke2009lis} hinges on this assumption. But even if
+this assumption holds, attempting to remove the irrelevant variability could
+introduce residual noise. As a consequence the performance could suffer, while
+a robust classifier might have been able to learn these variations in the data
+in the first place. This may be the reason why most of the aforementioned
+studies have been demonstrated on datasets that were artificially augmented
+with strong non-stationary distributions, or had to include additional data or
+labels to learn from.
+
+All these proposed methods focus on assuring that the features are identically
+distributed during training and testing. Still, being identically distributed
+does not imply that the samples are independent of each other.
+%
+The dependence of trials over time, which can be caused for example by inertia
+of neural processes or by filtering artifacts (or even the \ac{SOB} procedure), can result in prediction errors
+that are dependent in time. 
+%
+If the classifier observes a series of dependent errors that are caused by a
+single (hidden) event, and assumes that these errors are unrelated, this can
+severely bias the classifier and lead to overfitting.
+%
+Incorporating a priori known dependencies in the model thus enables the
+classifier to reduce the penalty for related errors (e.g. caused by a period of
+distraction of the user) and to focus on structural errors present in the data.
+ 
+In this Chapter, we focus on the violation of the independence aspect of the
+\ac{IID} assumption. Instead of attempting to remove dependencies in the
+feature space as done in previous work, we modeled the dependencies in the
+objective function of the classifier. Specifically, we present a generalization
+of the \ac{SVM} that uses latent slack variables to model the structure
+of misclassified training instances. By penalizing these latent slack
+variables, the \ac{dSVM} was able to diminish the influence of related errors
+and to reduce overfitting. The \ac{dSVM} was evaluated on real \ac{BCI}
+datasets, and showed an improvement in performance.
+
+\section{Previous work}
+\input{tex/sec_prev.tex}
+
+\section{The dependent-samples SVM}
+\input{tex/dsvm.tex}
+
+\section{Validation}
+To validate the \ac{dSVM} introduced in the previous section, we constructed an
+artificial dataset to demonstrate the \ac{dSVM}'s robustness against dependent
+disturbances. After demonstrating the \ac{dSVM} on this artificial dataset, we
+will present the evaluation of the \ac{dSVM} on a real \ac{BCI} dataset.
+
+\subsection{Artificial data}
+\input{tex/sec_artdata.tex}
+
+\subsection{BCI data}
+\input{tex/sec_bcidata.tex}
+
+\section{Discussion}
+\input{tex/sec_discussion.tex}
+
+\section{Conclusions and future work}
+\input{tex/sec_conclusion.tex}

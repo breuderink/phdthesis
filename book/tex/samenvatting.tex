@@ -1,0 +1,94 @@
+\chapter{Samenvatting}
+\selectlanguage{dutch} % sudo apt-get install texlive-lang-dutch
+\lettrine{E}{en} brein-computer interface (BCI) maakt directe communicatie
+tussen het brein en computers mogelijk, en omzeilt daarmee de traditionele
+route via de zenuwen en spieren. BCI's worden meestal ontworpen voor patiënten,
+die op geen enkele andere manier kunnen communiceren (door bijvoorbeeld
+verlamming). Het BCI-onderzoek van onze groep richt zich echter op gezonde
+gebruikers, specifiek op speltoepassingen. Deze ongebruikelijke focus leid
+tot andere eisen die we aan een BCI stellen.
+
+Voor een algemene acceptatie van BCI-technologie moeten twee kernproblemen
+worden opgelost: 1) de investering die gedaan moet worden om een BCI te kunnen
+gebruiken moet klein zijn voor de gebruiker (zowel financiële investeringen, als
+investering van tijd), en 2) op de BCI moet vertrouwd kunnen worden; de BCI
+moet dus voorspelbaar reageren, met een constante nauwkeurigheid. Daarnaast
+moet een BCI natuurlijk zo worden toegepast dat het een meerwaarde biedt omdat
+de huidige generatie BCI's zich nog niet kan meten met de snelheid en
+betrouwbaarheid van invoerapparaten voor gezonde gebruikers.
+
+Het eerste kernprobleem sluit de mogelijkheid uit dat hersensignalen worden
+gemeten met dure medische apparatuur. Relatief goedkope consumentenhardware is
+gelukkig al commercieel verkrijgbaar, wat het probleem van financiële
+investeringen grotendeels oplost. Wat overblijft is het deelprobleem dat
+(gezonde) gebruikers waarschijnlijk niet bereid zijn om weken of zelfs maanden
+te investeren --- hetgeen gangbaar is voor BCI's gericht op patiënten --- om de
+vaardigheid te leren die ze in staat stelt vrijwillig hun hersensignalen te
+sturen.
+  
+BCI's gebaseerd op \emph{machine learning} reduceren het probleem van de te
+investeren tijd van maanden naar minuten. Dit doen ze door de
+persoons-afhankelijke patronen in spontane hersenactiviteit te herkennen. Maar
+zelfs met deze geavanceerde BCI's is een veeleisende en foutgevoelige
+kalibratiesessie, waarin de gebruiker geforceerd mentale taken moet uitvoeren,
+steevast nodig voor de BCI gebruik kan worden. Deze kalibratie is nodig omdat
+de hersensignalen variëren van sessie tot sessie. De toepasbaarheid en de
+laagdrempeligheid van een BCI zouden sterk worden vergroot als deze
+herhaaldelijke kalibratiesessie vermeden kan worden.
+
+Het tweede kernprobleem is gerelateerd aan het fundamentele probleem dat binnen
+het BCI-veld bekend staat als niet-stationaire signalen. De inherent variabele
+natuur van spontane hersenactiviteit leidt tot variaties in de
+signaaleigenschappen die de BCI gebruikt om hersenactiviteit te herkennen. Deze
+variabiliteit schendt de basisaanname van de machine learning methodes die
+gebruikt worden om een herkenner voor de BCI te trainen, en leidt tot grote
+fluctuaties in de nauwkeurigheid van de herkenning van de hersenactiviteit.
+Deze fluctuaties maken de huidige generatie BCI's onbetrouwbaar.
+
+Beide kernproblemen zijn gerelateerd; zowel de inter-sessie variabiliteit als de
+onbetrouwbaarheid stammen af van niet volledig begrepen variaties van de
+hersensignalen over tijd, sessies en personen. In dit proefschrift onderzoeken
+we de aard van deze variaties, en ontwikkelen we twee nieuwe, complementaire
+technieken om deze kernproblemen op te lossen.
+
+Om het probleem van niet-stationaire hersensignalen te bevestigen, laten we
+eerst zien dat een BCI, gebaseerd op veelgebruikte signaaleigenschappen,
+gevoelig is voor veranderingen in de gemoedstoestand van de gebruiker.
+%
+Vervolgens presenteren we een methode gericht op het verwijderen van deze
+signaalveranderingen. Uitgaande van het inzicht dat een grote groep BCI's
+gebaseerd is op \emph{relatieve} veranderingen in spectrale energie, maar de
+absolute energie gebruikt, ontwikkelen we een methode die een tweede-orde
+referentiepunt (SOB, second-order baseline) gebruikt om de relatieve
+veranderingen in het vuren van neuronen te isoleren. Voor zover wij weten is
+dit de eerste BCI die, zonder kalibratiesessie, spontane hersenactiviteit kan
+herkennen bij nieuwe gebruikers, zonder dat dit tot prestatieverlies leidt.
+%
+Met deze SOB-methode hebben we het probleem van langzaam veranderende
+signaaldistributies omzeild. Maar nog steeds gaat de aanname, dat voorbeelden
+waarop de herkenner gebaseerd wordt onafhankelijk zijn van elkaar, niet op;
+hersenactiviteit lijkt op hersenactiviteit die kort daarvoor is waargenomen. In
+het bijzonder tijdens het trainen van een herkenner is het schenden van deze
+aanname problematisch, omdat de hoeveelheid informatie die de voorbeelden
+bevatten wordt overschat. Dit leidt tot \emph{overfitting}; het model werkt
+alleen goed tijdens de kalibratiesessie.
+%
+Daarom hebben we een generalisatie van de bekende \ac{SVM} herkenner afgeleid,
+die de chronologische structuur van herkenfouten mee kan nemen in de
+optimalisatie. Zowel op kunstmatige als echte BCI-data wordt overfitting
+verminderd, en leidt dit tot een verhoogde informatiedoorvoer.
+
+Met de SOB-methode hebben we het eerste kernprobleem (investering van
+tijd) opgelost voor BCI's gebaseerd op het inbeelden van bewegingen. Het is
+waarschijnlijk dat deze aanpak ook voor andere mentale taken de
+kalibratiesessie overbodig maakt. Het tweede kernprobleem is deels opgelost met
+de generalisatie van de \ac{dSVM}: de methode demonstreert dat het mogelijk is
+om de robuustheid te verbeteren door het modelleren van de structuur van de
+herkenfouten. Echter, het niet aannemen van onafhankelijke observaties roept
+nieuwe vragen op met betrekking tot de interpretatie van prestatiematen die
+gebruikt worden om BCI's te evalueren. Met de twee methodes gepresenteerd in
+deze thesis, hebben we een weg gebaand voor een nieuwe generatie BCI's --- BCI's
+die betrouwbaar werken, zonder dat een kalibratiesessie nodig is.
+
+\todo{SB: classifier ipv herkenner}
+\selectlanguage{british}

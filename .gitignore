@@ -1,0 +1,7 @@
+*.*.swp
+*.aux
+reuderink2011rbc*.*
+!reuderink2011rbc*.tex
+pub.bbl
+pub.blg
+

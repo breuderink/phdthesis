@@ -1,0 +1,329 @@
+\chapter{Conclusions}
+\lettrine{I}{n} this chapter, we will summarize the contributions of the last
+three chapters. Drawbacks and merits of the proposed methods will be discussed,
+and embedded in a unified view. We will reflect on the progress we have made
+towards the creation of robust \acp{BCI}, and outline directions to continue
+improving \acp{BCI}.
+
+\section{Summary of contributions}
+In Chapter~\ref{chap:loc} we showed that the feature distributions used for
+\ac{BCI} classification are indeed non-stationary, and that these changes can
+be caused by changes in the mental state of the user.
+%
+Changes in the mental state were induced with a modified Pacman game that
+caused episodes of frustration by reducing the amount of control the user had
+over the Pacman character. \Ac{BCI} classifiers based on spectral \ac{ERD}
+features that were trained on the episodes with full control performed
+significantly better on the episodes with reduced control.
+
+In Chapter~\ref{chap:sob} we described the \ac{SOB} method that reduces inter-session and inter-subject variability in signal feature
+distributions. The procedure is based on the insight that a large class of
+\acp{BCI} is based on \ac{ERD} which is observed by a \emph{relative change} in
+spectral power, but use absolute power instead for classification. An off-line
+experiment with 109 subjects has shown that these new features are robust
+enough to train a \ac{SI} \ac{BCI} classifier. 
+%
+The data of new, unseen users was classified with an accuracy as high as
+conventional \acp{BCI} that, unlike our method, do require a calibration
+session prior to \ac{BCI} use. To the best of our knowledge this is the first
+causal \ac{SI} \ac{BCI} classifier that works as well as \ac{SD} classifiers.
+
+In Chapter~\ref{chap:dsvm} we linked the problem of non-stationary feature
+spaces to the violation of the basic \ac{IID} assumption underlying most
+statistics. We derived a generalization of the well-known \ac{SVM} classifier,
+that takes the chronological dependence of features (and hence the dependence
+of classification errors) into account. Both on artificial data and real
+\ac{BCI} data, overfitting was reduced with this \ac{dSVM}, leading to an
+increased information throughput for the \ac{BCI}.
+
+\begin{sloppypar}
+In Chapter~\ref{chap:intro} we outlined two key issues for \acp{BCI}. We have
+fully addressed the first issue of investment of time by completely removing
+the need for a calibration session with the \ac{SOB} based \ac{ERD} features.
+It is likely that this approach also allows for \acl{SI} classification of
+other \ac{ERD} based brain signatures, and even of \ac{ERP} based signatures.
+This still has to be validated experimentally. Future research should
+investigate whether the dramatic performance gains associated with subject
+specific spectral filters \cite{blankertz2008bbc} can be incorporated into a
+generalized \ac{SOB} method.
+ 
+The second key issue of requiring predictable, dependable \ac{BCI} performance
+was partially addressed with the work on the \ac{dSVM}. The method demonstrates
+that it is feasible to model the relatedness of brain signals recorded nearby
+in time. Modeling the interdependence of trials is necessary to prevent
+overfitting when using high-dimensional features spaces based on \ac{EEG}. Not
+assuming \ac{IID} feature distributions raises new questions regarding
+performance evaluations though. Nevertheless, we have taken the first steps in
+handling non-stationary feature distributions from a new angle, which has
+provided the valuable insight that structured errors can indeed lead to
+overfitting. 
+\end{sloppypar}
+
+With the two new methods presented in this dissertation, we have paved the way
+for a next generation of \acp{BCI} --- \acp{BCI} that work dependably, without
+the need of recalibration \todo{MP: add more detail. Refer to future work}.
+
+\section{Discussion}
+The influence of non-stationary feature distributions on \ac{BCI}
+performance is often described as severe, and one easily gets the
+impression that the effects of the ever varying \ac{EEG} is the cause of the
+sometimes disappointing accuracy of \ac{BCI} systems.
+%
+While it is difficult to get a clear estimate of the impact these fluctuations
+in feature distributions  on the classification performance (because most
+variability is irrelevant for classification, and an upper limit of the
+performance is unknown), the results in Chapter~\ref{chap:loc} show that the
+difference in performance caused by different mental states is very modest,
+despite the fact that changes in the mental state were strongly induced.
+Furthermore, the trials sampled from deviating \ac{ERD} feature distribution
+were classified significantly better, contrary to what one would expect. These
+results, combined with fact that the \ac{SOB} did not result in an expected
+performance increase for within subject classification, indicate that the
+\emph{direct} influence of changing feature distributions on the performance is
+very weak.
+
+This does not imply that problems caused by non-stationary feature
+distributions do not exist, but merely that it is not straightforward to
+assess the magnitude of their influence.
+
+The common remedy to these ill-defined non-stationarities is to adapt the
+classifiers or feature spaces to track changes in the feature distributions.
+Our \ac{SOB} normalization procedure falls into this category. Although the
+method is able to track feature changes over time, it only results in
+performance gains when applied across subjects. This seems to indicate that the
+feature distributions are often approximately stationary within a session. The
+independence part of the \ac{IID} assumption is probably what is being
+violated, as shown in Chapter~\ref{chap:dsvm}.
+
+The unsupervised \ac{BCI} feature extraction in the form of covariance matrices
+(introduced in tensor form in \cite{farquhar2009lfs}) has some distinct
+advantages over the supervised \ac{ERD} feature extraction with the \ac{CSP}
+algorithm. First and foremost, it prevents the stacking of supervised methods
+with potentially different objective functions which can result in the final
+supervised layer underestimating the noise in the training set due to
+overfitting in the first supervised method (i.e. \ac{CSP}). Other advantages
+include that the spatial filter is learned implicitly, which simplifies
+multi-class classification, and the fact that the features are extracted
+without class labels opens up faster methods for cross-validation and
+performance measures. 
+%
+While the \ac{SOB} procedure can be used with \ac{CSP} feature extraction, the
+\ac{dSVM} presented in Chapter~\ref{chap:dsvm} critically depends on implicit
+learning of the spatial filters. 
+
+An additional performance increase is to be expected when the \ac{SOB} based
+normalization and the \ac{dSVM} with implicit learning of the spatial filters
+are combined. Both methods attempt to solve different aspects of the violation
+of the \ac{IID} assumption: the \ac{SOB} reduces long-term distribution
+changes, and thereby ensures that future features are almost distributed
+identically to the features calculated on the training data, and the \ac{dSVM}
+reduces overfitting caused by violating the independence aspect of the
+\ac{IID} assumption.
+%
+The results based on the \ac{SOB} procedure presented in Chapter~\ref{chap:sob}
+might still suffer from overfitting due to dependence of trainings trials.
+Similarly, the results presented in Chapter~\ref{chap:dsvm} could still suffer
+from changing distributions. Despite these suboptimal conditions, both methods
+demonstrate performance improvements on real \ac{BCI} data.
+
+\section{The road ahead}
+With the work described in this dissertation we have made strides in the
+development of robust \ac{BCI} methods, with applications both to advancing
+\ac{BCI} research and improved reliability of \acp{BCI} applied in practice.
+Usually, though, research answers fewer questions that it raises. In this
+section, we will present directions to find new interesting answers based on
+the experience gained in the past four years.
+
+\subsection{A different kind of BCI research}
+Our \acf{SI} classifier presented in Chapter~\ref{chap:sob} can facilitate the
+simplification of \ac{BCI} research. The current practice in the \ac{BCI} field
+is that classifiers are trained for each subject individually. This has the
+drawback that within a single experiment a great variety of classifier models
+is used; all these classifiers have to be carefully trained and inspected in
+order to ensure that the right signals are used for classification.
+%
+In Chapter~\ref{chap:sob} we showed that a single model can suffice for a large
+subject pool, without any loss of performance. As a result only a single set of
+spatial filters need to be inspected, and more data can be used. This reduces
+the chance of using subject-specific artifacts for classification. 
+
+As the \ac{SI} \ac{BCI} do no longer depend on a calibration session,
+the \ac{BCI} can be designed and \emph{fully trained before the actual
+experiment} is performed. Preparing a fully trained \ac{BCI} has the advantage
+that it does not depend on an error-prone calibration (a single artifact can
+severely change the resulting classifier). For subjects, a pre-trained \ac{BCI}
+has the advantage that it rewards a predetermined model of brain signals, and
+not some unrelated but class-relevant artifacts. User training might be improved by such validated, targeted feedback.
+%
+The separation of the sensitive training phase and application phase could
+stimulate multi-disciplinary \ac{BCI} research, as fully developed \acp{BCI}
+can be shared with researchers from other disciplines. For example, the
+\ac{BCI} field would greatly benefit from contributions from \ac{HCI} field
+\cite{millan2010cbc}, for example on the topics of user experience, evaluation
+methodology and application design. The required \ac{HCI} studies would become
+much easier with the availability of a pre-trained, validated \ac{BCI} that
+focusses on the intended brain regions.
+
+\begin{sloppypar}
+We see the transition from \acl{SD} to \acl{SI} models as a necessary step in
+the development of the field, parallel to the developments that have taken
+place in speech recognition research. We have demonstrated an \ac{SI} model
+that discriminates types of motor imagery within a single experimental
+environment using the same recording hardware. The next phase is to perform
+discrimination independent of the recording hardware, and independent of the
+specifics of the experiment for a variety of brain signatures.
+%
+Continuing the parallel with speech recognition, current \ac{BCI} research
+resembles small-vocabulary speech recognition, since a minimal number of
+actions is being discriminated. Future research effort could therefore focus
+on working towards more open-vocabulary models. In practice, this means the
+integration of multiple \ac{SI} models, such as for example the P300 response,
+the error potential, covert attention etcetera into a single \ac{BCI} system. 
+%
+The combination of detectors for the different brain signatures might lead to
+novel \ac{BCI} paradigms, and to disambiguation of variability naturally
+present in the brain signals.
+\end{sloppypar}
+
+\subsection{Better feature spaces}
+The method for \ac{SI} \ac{BCI} classification is still largely based on
+features inherited from \ac{SD} classification. The increase of training data
+and the increased diversity of the samples accompanying the transition from
+\ac{SD} to \ac{SI} classification creates the opportunity of (re)discovering
+appropriate feature spaces.
+
+An obvious and already often practised improvement for the features used in
+Chapters~\ref{chap:sob}~and~\ref{chap:dsvm} is the use of features based on
+multiple frequency bands instead of features based on a single broad frequency
+band \cite{lotte2009cdt, farquhar2009lfs}.
+
+A different path is the unification of known \ac{BCI} feature spaces. The
+features used to extract different \ac{BCI} signatures (e.g. \ac{SSVEP}, motor
+imagery related \ac{ERD}, P300) are usually designed specifically for the task,
+despite that these methods are all based on either phase-locked amplitude
+(\ac{ERP}) or oscillator power (\ac{ERD}/\ac{ERS}).
+%
+A combined feature space that can capture both the first order \ac{ERP}
+features and the second order \ac{ERD}/\ac{ERS} features can result in an
+improvement in performance \cite{christoforou2010sob}, and could provides a
+single unified feature space that can be applied to all known \ac{BCI} tasks.
+The unification of the two main feature spaces would help to reduce the
+balkanization of the \ac{BCI} methods (i.e. each group introduces a new variant
+of a \ac{BCI} classification pipeline).
+
+\begin{sloppypar}
+One way to implement unification would be through the definition of specific
+kernels for use in kernel machines. An example of such a kernel is a complex
+non-homogeneous polynomial kernel used on specific frequency bins of
+\ac{DFT} transformed trials.
+%
+Working in the \ac{DFT} domain opens another interesting possibility of
+shift-invariant \ac{ERP} classification, in other words, a P300 could be detected at
+variable positions in the analysis window due to the circular wrapping of the
+\ac{DFT}. Applications include uncued \ac{ERP} classification and the detection
+of non phase-locked \acp{ERP}.
+
+% CFC
+A strong neurological motivation for the inclusion of phase features in
+oscillatory analyses is provided with the recent discovery of \ac{CFC}:
+sometimes the activity for a given frequency band cannot be detected on its own,
+but only emerges after phase-locking the high-frequency power to the phase of a
+low-frequency task-relevant activity~\cite{cohen2011iat, osipova2008gpp}.
+\Ac{CFC} takes these non-linear interactions between signals in different
+frequency bands into account. The discovery of these interactions
+have caused some excitement in the neuroscience community~\cite{canolty2006hgp,
+colgin2009fgo} since they assess the information being carried in the precise
+timing of activity within, and across, physically separated brain areas.
+Although pestered by the huge increase in feature dimensionality, \Ac{CFC}
+based features could eventually culminate in an ultimate feature space that
+supports \ac{ERP} and \ac{ERD} based classification as well as more complex
+interactions.
+\end{sloppypar}
+
+% Other feature spaces
+Another route to improve the \acp{BCI} feature space is through unsupervised,
+semi-supervised or transfer learning. In general, the amount of \emph{labeled}
+training data is limited. In contrast, unlabeled data is abundant, and
+increasingly so with each recorded session. With these  methods this data might
+be utilized, although the methods' applicability to \ac{BCI} datasets with
+their excessive and non-\ac{IID} noise needs to be validated.
+
+\subsection{Towards uncued BCI classification}
+A limitation of most \ac{BCI} research to date --- including our own research
+--- is that the pace of communication is completely determined by the system.
+That is, the system dictates a window in which the user can perform a
+predetermined mental task to control the system. This is often true even when
+no stimulation is necessary to perform the mental task (e.g. motor imagery).
+%
+For most practical applications the continuous classification of brain signals
+is preferred, since the explicit trial based communication is unnecessarily
+restrictive for the user. The transition form cued trials to uncued
+classification implies that the user can decide to perform a function at any
+time. This has two implications for the design of the \ac{BCI}: 1) the \ac{BCI}
+has to perform robustly when the user is not engaged with the \ac{BCI} and
+performs unrelated tasks, and 2) the \ac{BCI} classifier should not depend on a
+specific alignment of the trial with the sliding classification window. 
+
+% Challenge 1)
+The first challenge of producing few false positives can be addressed by 
+selecting mental tasks with big contrasts between the active tasks and the
+resting state. For identifying these tasks we depend on the field of
+neuroscience.
+
+% Challenge 2)
+The second issue of alignment reshapes the definition of the learning problem
+used to train the \ac{BCI} classifier. Since it is unknown what part of the
+brain signature is being processed, or even if the user is performing a task at
+all, the \ac{BCI} has to discriminate reliably under a much larger variety of
+circumstances.
+%
+Usually uncued classification is achieved by training a \ac{BCI} classifier
+on cued trails, and subsequently modifying the classification pipeline
+to produce predictions at regular intervals. This method further violates the
+\ac{IID} assumption, and lacks proper theoretical backing.
+%
+A better approach would be to use an overlapping sliding classification window,
+and let the \ac{ML} methods model the mapping from the space of the different
+(partial) observations to labels. But since features extracted with this
+sliding window share most of their values with the previous window they are by
+definition, strongly related. Therefore, classification problems based
+on a sliding window form a natural candidate for classification methods that
+relax the \ac{IID} assumption, such as the \ac{dSVM} presented in
+Chapter~\ref{chap:dsvm}.
+
+% baseline
+An additional complexity is added by uncued \ac{BCI} operation, since a
+pre-trial baseline cannot be easily defined. Since the \ac{SOB} method
+(Chapter~\ref{chap:sob}) depends on such a baseline, an alternative baseline
+method needs to be devised. One approach would be to use a fixed delay for the
+baseline; preliminary results are presented in \cite{reuderink2010sss}.
+
+\todo{FL: Work on uncued BCI. Particular Neil Squire Foudnation wht Mason \& Birch, Mullan. Cite: Mason et al, "Evaluating the peformance of self-paced BCI technology, TR, 2006"}
+
+\subsection{The iid assumption}
+One of the elusive aspects of \acp{BCI} remains, and that is the problem of
+non-stationary feature distributions. While variations in the performance are
+frequently stated in the literature, hard evidence of these fluctuations is
+difficult to gather. We believe this is due to a bias induced in the
+past years by favouring robustly performing feature spaces and classifiers with
+a low capacity for overfitting (e.g. linear classifiers).
+
+By definition, the common assumption that data is \ac{IID} is violated when the
+feature distributions are produced by a non-stationary process. Since the
+\ac{IID} assumption abounds both in the \ac{ML} and the common evaluation
+methods, weakening the \ac{IID} assumption requires the reevaluation of known
+best practises. The problem caused by incorrectly assuming \ac{IID} is a form
+of overfitting. Combined with the small training sets resulting from per
+session re-training, this might explain why previous attempts to use non-linear
+classifiers, or more complex feature spaces have been unsuccessful to date.
+
+In Chapter~\ref{chap:dsvm} we showed that modeling the dependence of
+classification errors is beneficial for the \ac{BCI} performance. Still, the
+relation between the changes in the feature distributions and the \ac{IID}
+assumption needs to be better understood. Based on this understanding better
+classifiers and evaluation guidelines that take the relatedness of measures
+into account need to be developed.
+%
+The violated \ac{IID} assumption is one of the most intriguing aspects of
+working with \ac{BCI} data, and our struggle with non-\ac{IID} data might lead
+to new insights and novel classification models. 

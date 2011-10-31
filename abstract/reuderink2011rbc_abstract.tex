@@ -1,0 +1,56 @@
+\documentclass[a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[adobe-utopia]{mathdesign}
+\usepackage[margin=3cm]{geometry}
+\linespread{1.7}
+
+\usepackage[acronym,shortcuts]{glossaries}
+\input{acronyms.tex}
+
+\title{Abstract PhD thesis\\ \textsc{Robust Brain-Computer Interfaces}}
+\author{Boris Reuderink}
+
+\begin{document}
+\maketitle
+
+A \ac{BCI} enables direct communication from the brain to devices,
+bypassing the traditional pathway of peripheral nerves and muscles.   
+%
+Current \acp{BCI} aimed at patients require that the user invests weeks, or even
+months, to learn the skill to intentionally modify their brain signals. This can
+be reduced to a calibration session of about half an hour per session if
+\ac{ML} methods are used. The laborious recalibration is still needed due to
+inter-session differences in the statistical properties of the \ac{EEG} signal.
+%
+Further, the natural variability in spontaneous \ac{EEG} violates basic
+assumptions made by the \ac{ML} methods used to train the \ac{BCI} classifier,
+and causes the classification accuracy to fluctuate unpredictably. These
+fluctuations make the current generation of \acp{BCI} unreliable.
+%
+In this dissertation, we will investigate the nature of these variations in the
+\ac{EEG} distributions, and introduce two new, complementary methods to
+overcome these two key issues.
+%
+To confirm the problem of non-stationary brain signals, we first show that
+\acp{BCI} based on commonly used signal features are sensitive to changes in
+the mental state of the user.
+% 
+We proceed by describing a method aimed at removing these changes in signal
+feature distributions. We have devised a method that uses a \ac{SOB} to
+specifically isolate these relative changes in neuronal firing synchrony. To
+the best of our knowledge this is the first \ac{BCI} classifier that works on
+out-of-sample subjects without any loss of performance.
+%
+Still, the assumption made by \ac{ML} methods that the training data consists of
+samples that are \ac{IID} is violated, because \ac{EEG} samples nearby in time
+are highly correlated. Therefore we derived a generalization of the well-known
+\ac{SVM} classifier, that takes the resulting chronological structure of
+classification errors into account. Both on artificial data and real \ac{BCI}
+data, overfitting is reduced with this \ac{dSVM}, leading to \acp{BCI} with an
+increased information throughput.
+
+%With the \ac{SOB} features we have addressed the first key issue (of investment
+%of time) for a motor imagery task. The second key issue is partially addressed with the \ac{dSVM}, but raises new questions regarding the
+%interpretation of \ac{BCI} performance. 
+\end{document}

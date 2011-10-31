@@ -1,0 +1,206 @@
+\begin{sloppypar}
+Given training examples $\{\vec{x}_i\}$ and corresponding labels $\vec{y}_i \in
+\{-1, 1\}$, the \ac{dSVM} can be formulated as the following constrained,
+convex optimization problem:
+\begin{align}
+  \arg\min_{\vec{w},b,\xi} \quad
+  & \frac{1}{2}\norm{\vec{w}}^2 
+  + c \sum_i \vec{\xi}_i
+\\
+  \text{s.t.} \quad 
+  & y_i \left(\vec{w}^T \phi(\vec{x}_i) + b\right) + D \vec{\xi}_i \ge 1
+\\
+  & \vec{\xi}_i \ge 0,
+\end{align}
+%
+where $\vec{w}$ is the classifier's weight vector and $b$ is the bias term.
+The function $\phi(\cdot)$ maps examples from input space to a feature space.
+The $c$ parameter determines the cost of penetrating the \ac{SVM}'s
+margin (margin errors); $\vec{\xi}_i$ is a positive, latent slack-variable that
+accommodates for these margin errors, and is related to a specific example $i$
+through $(D\vec{\xi})_i$. 
+%
+When $D$ is the identity matrix $I$, each slack variable $\vec{\xi}_i$ is
+linked to a single instance $i$ of the training set, and the \ac{dSVM}
+degenerates to the traditional soft-margin \ac{SVM} \cite{cortes1995svn}. The
+columns $D_{i,\cdot}$ contain the non-negative dispersion function for a
+specific latent error $\vec{\xi}_i$ that needs to be specified a priori.
+\end{sloppypar}
+
+%
+For ease of notation, we write this in matrix form 
+with $Y_{i,i} = \vec{y}_i$ and $X_{\cdot,i} = \phi(x_i)$:
+\begin{align}
+  \arg\min_{\vec{w}, b, \vec{\xi}} \quad
+  & \frac{1}{2}\norm{\vec{w}}^2
+  + c\vec{\xi}^T\vec{1}
+\\ \label{eq:dsvm_margin_error_const}
+  \text{s.t.} \quad &
+  Y \left(\vec{w}^T X + b\right)^T + D \vec{\xi} - 1 \succeq 0 
+\\&
+  \vec{\xi} \succeq 0.
+\end{align}
+%
+With the Lagrange multipliers $\vec{\alpha}$ and $\vec{\gamma}$, the
+constraints can be put in the primal objective function $\mathcal{L}_p$ that
+needs to be minimized for $\vec{w}$ and $b$, and maximized for the
+dual variables $\vec{\alpha}$ and $\vec{\gamma}$:
+\begin{align}
+  \mathcal{L}_p(\vec{w}, b, \vec{\xi}, \vec{\alpha}, \vec{\gamma})= & 
+  \frac{1}{2} \vec{w}^T \vec{w}
+  + c\vec{\xi}^T\vec{1}
+  - \vec{\alpha}^T \left(
+    Y X^T \vec{w} + b \vec{y}  + D \vec{\xi} - \vec{1}
+    \right)
+  - \vec{\gamma}^T \vec{\xi}
+\\
+  \text{s.t.} \quad &
+  \vec{\alpha} \succeq 0 \quad \text{and} \quad \vec{\gamma} \succeq 0,
+  \label{eq:dsvm_slack_const}
+\end{align}
+%
+Setting the derivative of the primal variables $\vec{w}$, $b$ and $\vec{\xi}$ to zero yields their minimum,
+\begin{align}
+  \frac{\delta}{\delta \vec{w}} \mathcal{L}_p &= 
+  \vec{w}^T - \vec{\alpha}^T Y X^X = 0
+  &&\Rightarrow \vec{w} = X Y \vec{\alpha}
+  \label{eq:dsvm_w_prime}
+\\
+  \frac{\delta}{\delta b} \mathcal{L}_p &= 
+  -\vec{\alpha}^T \vec{y} = 0
+  &&\Rightarrow \vec{\alpha}^T \vec{y} = 0
+  \label{eq:dsvm_b_prime}
+\\
+  \frac{\delta}{\delta \vec{\xi}} \mathcal{L}_p &= 
+  c\vec{1}^T - \vec{\alpha}^T D - \vec{\gamma}^T = 0
+  &&\Rightarrow c\vec{1}^T = \vec{\alpha}^T D + \vec{\gamma}^T,
+  \label{eq:dsvm_xi_prime}
+\end{align}
+%
+that result in the dual $\mathcal{L}_d$ after substitution:
+\begin{align} % substitute w
+%  \mathcal{L}_d & =
+%  \frac{1}{2} 
+%    \vec{\alpha}^T Y X^T X Y \vec{\alpha}
+%  + c\vec{\xi}^T\vec{1}
+%  - \vec{\alpha}^T \left(
+%    Y X^T X Y \vec{\alpha} 
+%      + D \vec{\xi} 
+%      - \vec{1}
+%    \right)
+%  - \vec{\gamma}^T \vec{\xi}
+%\\ & =
+%  \vec{\alpha}^T \vec{1}
+%  - \frac{1}{2} \vec{\alpha}^T Y K Y \vec{\alpha}
+%  + c \vec{1}^T\vec{\xi}
+%  - \vec{\alpha}^T D \vec{\xi} 
+%  - \vec{\gamma}^T \vec{\xi}
+%\\ & =
+%  \vec{\alpha}^T \vec{1}
+%  - \frac{1}{2} \vec{\alpha}^T Y K Y \vec{\alpha}
+%  + \left(
+%    c \vec{1}^T
+%    - \vec{\alpha}^T D
+%    - \vec{\gamma}^T
+%    \right) \vec{\xi}
+%\\
+  \mathcal{L}_d (\vec{\alpha}) & =
+  \vec{\alpha}^T \vec{1}
+  - \frac{1}{2} \vec{\alpha}^T Y K Y \vec{\alpha},
+\end{align}
+%
+where the kernel matrix $K_{i,j}=\phi(\vec{x_i})^T \phi(\vec{x_j})$.
+The dual $\mathcal{L}_d$ needs to be maximized with respect to the dual
+variables $\vec{\alpha}$, subject to the \ac{KKT} conditions
+\eqref{eq:dsvm_b_prime}, \eqref{eq:dsvm_xi_prime} and
+\eqref{eq:dsvm_slack_const}:
+%
+\begin{align}
+  \arg\max_{\vec{\alpha}} \quad \mathcal{L}_d = & 
+  \vec{\alpha}^T \vec{1} - \frac{1}{2} \vec{\alpha}^T Y K Y \vec{\alpha}
+  \label{eq:dsvm_dual}
+\\
+  \text{s.t.} \quad &
+  0 \preceq \vec{\alpha}^T D \preceq c, \quad \vec{\alpha}^T \vec{y} = 0.
+  \label{eq:dsvm_dual_const}
+\end{align}
+%
+The only difference of this dual with the soft-margin \ac{SVM}'s dual is the
+appearance of the dispersion matrix $D$ in the constraint
+\eqref{eq:dsvm_dual_const}; with $D=I$ the dual degenerates to the soft-margin \ac{SVM}'s
+dual. 
+%
+The \ac{dSVM}'s dual \eqref{eq:dsvm_dual} and constraints
+\eqref{eq:dsvm_dual_const} form a \ac{QP} problem, and an optimal
+$\vec{\alpha}$ can be found with a standard \ac{QP} solver. With $\vec{\alpha}$
+found, $\vec{w}$ is defined through \eqref{eq:dsvm_w_prime}. 
+
+The bias $b$ is usually calculated from support vectors on the
+boundary of the margin using \eqref{eq:dsvm_margin_error_const} in the
+traditional soft-margin \ac{SVM} formulation, i.e. from the $x_i$ where
+$\vec{\alpha}_i > 0$ and $(I\vec{\xi})_i = 0$. 
+%For these unconstrained support vectors, the term $YD \vec{\xi}$ in
+%
+%\begin{align}
+%  Y \left(\vec{w}^T X + b\right)^T + D \vec{\xi} - 1 &\succeq 0 
+%\\
+%  Y \left(\vec{w}^T X + \vec{b}^T\right)^T + D \vec{\xi} - 1 &\succeq 0 
+%\\
+%  Y \left(X^T\vec{w} + \vec{b}\right) + D \vec{\xi} - 1 &\succeq 0 
+%\\
+%  Y X^T\vec{w} + Y\vec{b} + D \vec{\xi} - 1 &\succeq 0 
+%\\
+%  Y\vec{b} &\succeq 1 - D \vec{\xi} - Y X^T\vec{w}
+%\\
+%  \vec{b} &\succeq Y^{-1}\vec{1} - Y^{-1}D \vec{\xi} - Y^{-1}Y X^T \vec{w}
+%\\
+%  \vec{b} &\succeq Y\vec{1} - YD \vec{\xi} - K Y \vec{\alpha}
+%\\
+%  \label{eq:dsvm_bias}
+%  \vec{b} &\succeq \vec{y} - K Y \vec{\alpha} - YD \vec{\xi}
+%\end{align}
+%vanishes, and $b$ can be calculated from the known kernel, labels and
+%$\vec{\alpha}$.
+%
+%It is possible however, that there are no unconstrained support vectors, and
+%$b$ is optimal for an interval. 
+With the \ac{dSVM}, this definition of unconstrained support vectors is
+troublesome, since the latent slack variables are associated with multiple
+(possibly all) support vectors through $D$. Therefore, we have chosen to use an
+implicit, regularized bias instead, which can be implemented by either adding a
+constant feature, or by using an inhomogeneous kernel. To remove the bias term,
+the constraint \eqref{eq:dsvm_b_prime} has to be removed, resulting in
+%
+\begin{align}
+  \arg\min_{\vec{\alpha}} \quad \mathcal{L}_d = & 
+  \frac{1}{2} \vec{\alpha}^T Y K Y \vec{\alpha}
+  - \vec{1}^T\vec{\alpha}
+\\
+  \text{s.t.} \quad &
+  0 \preceq \vec{\alpha}^T D \preceq c,
+\end{align}
+which is still a standard \ac{QP} problem.
+
+\begin{sloppypar}
+Classification with the \ac{dSVM} is done as with the \ac{SVM}, using
+\eqref{eq:dsvm_w_prime} and \eqref{eq:dsvm_margin_error_const}, with $b=0$:
+%
+\begin{equation}
+  f(X_2) = \vec{w}^T X_2 + b = \vec{\alpha}^T Y X^T X_2 = \vec{\alpha}^T Y K_2.
+\end{equation}
+%
+The main difference between the \ac{dSVM} and the traditional soft-margin
+\ac{SVM} is that \ac{dSVM} has groups of support vectors that share a ``support
+budget'', whereas the former has a budget per support vector. In addition, the
+dispersion matrix $D$ has to be specified a priori based on domain knowledge
+(e.g. for time series classification with a sliding window, the dependence is
+apparent from the feature construction).
+%
+The dispersion functions (columns of $D$) do not have to be the same function
+with an offset. For example, when combining the data of multiple subjects, the
+$D$ matrix could model a dependency of all trials (instances) on a subject, and
+a dependency on trials of the same subject near in time. This would allow the
+\ac{dSVM} to remove subjects that do not display the expected brain signal
+altogether from the training set, while still spending modeling power on an as 
+diverse set of subjects as possible.
+\end{sloppypar}
