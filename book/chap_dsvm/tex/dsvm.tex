@@ -1,35 +1,35 @@
 \begin{sloppypar}
-Given training examples $\{\vec{x}_i\}$ and corresponding labels $\vec{y}_i \in
+Given training examples $\{\vec{x}_i\}$ and corresponding labels $y_i \in
 \{-1, 1\}$, the \ac{dSVM} can be formulated as the following constrained,
 convex optimization problem:
 \begin{align}
   \arg\min_{\vec{w},b,\xi} \quad
   & \frac{1}{2}\norm{\vec{w}}^2 
-  + c \sum_i \vec{\xi}_i
+  + c \sum_i \xi_i
 \\
   \text{s.t.} \quad 
-  & y_i \left(\vec{w}^T \phi(\vec{x}_i) + b\right) + D \vec{\xi}_i \ge 1
+  & y_i \left(\vec{w}^T \phi(\vec{x}_i) + b\right) + (D \vec{\xi})_i \ge 1
 \\
-  & \vec{\xi}_i \ge 0,
+  & \xi_i \ge 0,
 \end{align}
 %
 where $\vec{w}$ is the classifier's weight vector and $b$ is the bias term.
 The function $\phi(\cdot)$ maps examples from input space to a feature space.
 The $c$ parameter determines the cost of penetrating the \ac{SVM}'s
-margin (margin errors); $\vec{\xi}_i$ is a positive, latent slack-variable that
+margin (margin errors); $\xi_i$ is a positive, latent slack-variable that
 accommodates for these margin errors, and is related to a specific example $i$
 through $(D\vec{\xi})_i$. 
 %
-When $D$ is the identity matrix $I$, each slack variable $\vec{\xi}_i$ is
+When $D$ is the identity matrix $I$, each slack variable $\xi_i$ is
 linked to a single instance $i$ of the training set, and the \ac{dSVM}
 degenerates to the traditional soft-margin \ac{SVM} \cite{cortes1995svn}. The
 columns $D_{i,\cdot}$ contain the non-negative dispersion function for a
-specific latent error $\vec{\xi}_i$ that needs to be specified a priori.
+specific latent error $\xi_i$ that needs to be specified a priori.
 \end{sloppypar}
 
 %
 For ease of notation, we write this in matrix form 
-with $Y_{i,i} = \vec{y}_i$ and $X_{\cdot,i} = \phi(x_i)$:
+with $Y_{i,i} = y_i$ and $X_{\cdot,i} = \phi(x_i)$:
 \begin{align}
   \arg\min_{\vec{w}, b, \vec{\xi}} \quad
   & \frac{1}{2}\norm{\vec{w}}^2
@@ -137,8 +137,8 @@ found, $\vec{w}$ is defined through \eqref{eq:dsvm_w_prime}.
 
 The bias $b$ is usually calculated from support vectors on the
 boundary of the margin using \eqref{eq:dsvm_margin_error_const} in the
-traditional soft-margin \ac{SVM} formulation, i.e. from the $x_i$ where
-$\vec{\alpha}_i > 0$ and $(I\vec{\xi})_i = 0$. 
+traditional soft-margin \ac{SVM} formulation, i.e. from the $\vec{x}_i$ where
+$\alpha_i > 0$ and $(I\vec{\xi})_i = 0$. 
 %For these unconstrained support vectors, the term $YD \vec{\xi}$ in
 %
 %\begin{align}

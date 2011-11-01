@@ -34,13 +34,13 @@ dispersion matrix $D$ was constructed using \eqref{eq:laplace_dist}:
 \begin{align} \label{eq:dfunc}
   \tilde{D}_{i,j} &=
     \begin{cases}
-      \vec{g}_i \cdot f(\lvert \vec{t}_i - \vec{t}_j \rvert) 
-        & \text{if } \vec{y}_i = \vec{y}_j,
+      g_i \cdot f(\lvert t_i - t_j \rvert) 
+        & \text{if } y_i = y_j,
     \\
       0 & \text{otherwise}
     \end{cases}
 \end{align}
-where $\vec{t}_i$ is the time offset of an instance, and $\vec{g}$ chosen such
+where $t_i$ is the time offset of an instance $i$, and $\vec{g}$ chosen such
 that the columns of $D$ are normalized to one.
 \end{sloppypar}
 
